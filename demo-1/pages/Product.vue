@@ -134,34 +134,8 @@
           <SfTabs :open-tab="1" class="product__tabs">
             <SfTab data-cy="product-tab_description" title="Description">
               <div class="product__description">
-                {{ $t("Product description") }}
+                {{ description }}
               </div>
-
-              <SfProperty
-                name="Product Code"
-                value="Product Code"
-                class="product__property"
-              >
-                <template #value>
-                  <SfButton class="product__property__button sf-button--text">
-                    {{ code }}
-                  </SfButton>
-                </template>
-              </SfProperty>
-
-              <SfProperty
-                v-for="(property, i) in properties"
-                :key="i"
-                :name="property.attributeName"
-                :value="property.value"
-                class="product__property"
-              >
-                <template v-if="property.name === 'Category'" #value>
-                  <SfButton class="product__property__button sf-button--text">
-                    {{ property.value }}
-                  </SfButton>
-                </template>
-              </SfProperty>
             </SfTab>
             <SfTab title="Read reviews" data-cy="product-tab_reviews">
               <SfReview
