@@ -59,7 +59,7 @@ export default {
   }
 }
 .grid {
-  display: flex !important;
+  display: flex ;
   max-height: 20.625rem;
   width: 100%;
   justify-content: center;

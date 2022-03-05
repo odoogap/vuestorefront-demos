@@ -1,6 +1,7 @@
 module.exports = {
   purge: [],
   important: true,
+  prefix: 'tw-',
   theme: {
     extend: {
       fontSize: {
