@@ -25,7 +25,7 @@
                     class="card__text"
                     v-else-if="item.name === 'Sub Total'"
                   >
-                   ${{ item.value.value.subtotal }}</span
+                    ${{ item.value.value.subtotal }}</span
                   >
                   <span class="card__text" v-else> {{ item.value }}</span>
                 </template>
@@ -51,7 +51,7 @@
               <div>
                 <nuxt-link to="/checkout/shipping">
                   <SfButton class="color-primary custom__width">{{
-                    $t("GO TO CHECKOUT")
+                    $t('GO TO CHECKOUT')
                   }}</SfButton>
                 </nuxt-link>
               </div>
@@ -59,7 +59,7 @@
                 <SfButton
                   class="color-black custom__width"
                   @click="$router.go(-1)"
-                  >{{ $t("GO BACK SHOPPING") }}</SfButton
+                  >{{ $t('GO BACK SHOPPING') }}</SfButton
                 >
               </div>
               <div class="mb-3">
@@ -81,7 +81,7 @@
                   <span class="text-primary">•</span> Questions? Chat with us or
                   call 1.888.282.6060. <br />
                   <span class="text-primary">•</span> Shipping internationally?
-                  Choose your destination   & currency. <br />
+                  Choose your destination & currency. <br />
                   <span class="text-primary">•</span> Shipping methods & charges
                 </div>
               </div>
@@ -176,15 +176,15 @@ import {
   SfHeading,
   SfBreadcrumbs,
   SfOrderSummary,
-} from "@storefront-ui/vue";
-import { ref } from "@nuxtjs/composition-api";
-import { computed } from "@nuxtjs/composition-api";
-import { useCart, useUser, cartGetters } from "@vue-storefront/odoo";
-import { useUiState } from "~/composables";
-import { onSSR } from "@vue-storefront/core";
+} from '@storefront-ui/vue';
+import { ref } from '@nuxtjs/composition-api';
+import { computed } from '@nuxtjs/composition-api';
+import { useCart, useUser, cartGetters } from '@vue-storefront/odoo';
+import { useUiState } from '~/composables';
+import { onSSR } from '@vue-storefront/core';
 
 export default {
-  name: "DetailedCart",
+  name: 'DetailedCart',
   components: {
     SfCollectedProduct,
     SfBreadcrumbs,
@@ -207,27 +207,27 @@ export default {
     });
     const summary = ref([
       {
-        name: "Products",
+        name: 'Products',
         value: totalItems,
       },
       {
-        name: "Sub Total",
+        name: 'Sub Total',
         value: totals,
       },
 
       {
-        name: "Shipping:",
-        value: "Free",
+        name: 'Shipping:',
+        value: 'Free',
       },
     ]);
     const breadcrumbs = [
       {
-        text: "Home",
-        link: "/",
+        text: 'Home',
+        link: '/',
       },
       {
-        text: "Cart",
-        link: "#",
+        text: 'Cart',
+        link: '#',
       },
     ];
 
@@ -249,7 +249,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "~@storefront-ui/vue/styles";
+@import '~@storefront-ui/vue/styles';
 #detailed-cart {
   box-sizing: border-box;
   @include for-desktop {

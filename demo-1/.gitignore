@@ -93,4 +93,7 @@ sw.*
 # Vim swap files
 *.swp
 
+# vscode files
+/.vscode
+
 version
