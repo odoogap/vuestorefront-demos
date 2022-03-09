@@ -182,6 +182,8 @@ import { ref, watch, onMounted, computed } from '@vue/composition-api';
 import {
   useCountrySearch,
   useUser,
+  useCart,
+  cartGetters,
   userShippingGetters,
   useShipping,
 } from '@vue-storefront/odoo';
@@ -210,6 +212,10 @@ export default {
       import('~/components/Checkout/VsfShippingProvider'),
   },
   setup(props, { root, emit }) {
+    const { cart } = useCart();
+    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
+    if (totalItems.value === 0) root.$router.push('/cart');
+
     const isFormSubmitted = ref(false);
     const formRef = ref(false);
     const currentAddressId = ref('');
@@ -287,8 +293,14 @@ export default {
       async () => {
         await searchCountryStates(form.value.country.id);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = null;
+          form.value.state.id = 1;
         }
+      },
+    );
+    watch(
+      () => totalItems.value,
+      () => {
+        if (totalItems.value === 0) root.$router.push('/cart');
       },
     );
 
