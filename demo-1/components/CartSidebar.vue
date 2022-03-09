@@ -42,7 +42,7 @@
                     <SfProperty
                       v-for="(attribute, key) in cartGetters.getItemAttributes(
                         product,
-                        ['color', 'size']
+                        ['color', 'size'],
                       )"
                       :key="key"
                       :name="key"
@@ -78,21 +78,24 @@
           <div v-if="totalItems">
             <SfProperty
               name="Total price"
-              class="
-                sf-property--full-width sf-property--large
-                my-cart__total-price
-              "
+              class="sf-property--full-width sf-property--large my-cart__total-price"
             >
               <template #value>
                 <SfPrice :regular="$n(totals.subtotal, 'currency')" />
               </template>
             </SfProperty>
+
             <nuxt-link to="/checkout/shipping">
+              <SfButton class="sf-button--full-width color-primary mb-4">{{
+                $t('GO TO CHECKOUT')
+              }}</SfButton>
+            </nuxt-link>
+            <nuxt-link to="/cart">
               <SfButton
                 class="sf-button--full-width color-secondary"
                 @click="toggleCartSidebar"
               >
-                {{ $t("Go to checkout") }}
+                {{ $t('SEE CART DETAILS') }}
               </SfButton>
             </nuxt-link>
           </div>
@@ -100,7 +103,7 @@
             <SfButton
               class="sf-button--full-width color-primary"
               @click="toggleCartSidebar"
-              >{{ $t("Go back shopping") }}</SfButton
+              >{{ $t('Go back shopping') }}</SfButton
             >
           </div>
         </transition>
@@ -117,15 +120,15 @@ import {
   SfProperty,
   SfPrice,
   SfCollectedProduct,
-  SfImage
-} from "@storefront-ui/vue";
-import { computed } from "@nuxtjs/composition-api";
-import { useCart, useUser, cartGetters } from "@vue-storefront/odoo";
-import { useUiState } from "~/composables";
-import { onSSR } from "@vue-storefront/core";
+  SfImage,
+} from '@storefront-ui/vue';
+import { computed } from '@nuxtjs/composition-api';
+import { useCart, useUser, cartGetters } from '@vue-storefront/odoo';
+import { useUiState } from '~/composables';
+import { onSSR } from '@vue-storefront/core';
 
 export default {
-  name: "Cart",
+  name: 'Cart',
   components: {
     SfSidebar,
     SfButton,
@@ -134,7 +137,7 @@ export default {
     SfProperty,
     SfPrice,
     SfCollectedProduct,
-    SfImage
+    SfImage,
   },
   setup() {
     const { isCartSidebarOpen, toggleCartSidebar } = useUiState();
@@ -157,9 +160,9 @@ export default {
       toggleCartSidebar,
       totals,
       totalItems,
-      cartGetters
+      cartGetters,
     };
-  }
+  },
 };
 </script>
 
