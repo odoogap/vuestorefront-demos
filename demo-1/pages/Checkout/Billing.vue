@@ -110,6 +110,7 @@
           slim
         >
           <SfSelect
+            v-if="countryStates && countryStates.length"
             v-model="form.state.id"
             label="State/Province"
             name="state"
@@ -121,12 +122,16 @@
           >
             <SfSelectOption
               v-for="countryStateOption in countryStates"
-              :key="countryStateOption.id"
-              :value="countryStateOption.id"
+              :key="countryStateOption && countryStateOption.id"
+              :value="countryStateOption && countryStateOption.id"
             >
               {{ countryStateOption.name }}
             </SfSelectOption>
           </SfSelect>
+          <SfSelect
+            v-else
+            class="form__element form__element--half form__select form__element--half-even invisible"
+          />
         </ValidationProvider>
 
         <ValidationProvider
