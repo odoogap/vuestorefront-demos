@@ -110,11 +110,13 @@
           slim
         >
           <SfSelect
-            v-if="countryStates && countryStates.length"
             v-model="form.state.id"
             label="State/Province"
             name="state"
             class="form__element form__element--half form__select sf-select--underlined form__element--half-even"
+            :class="[
+              countryStates && countryStates.length ? 'visible' : 'invisible',
+            ]"
             required
             @change="validate"
             :valid="!errors[0]"
@@ -128,10 +130,6 @@
               {{ countryStateOption.name }}
             </SfSelectOption>
           </SfSelect>
-          <SfSelect
-            v-else
-            class="form__element form__element--half form__select form__element--half-even invisible"
-          />
         </ValidationProvider>
 
         <ValidationProvider
