@@ -1,21 +1,20 @@
 module.exports = {
   purge: [],
   important: true,
-  prefix: 'tw-',
   theme: {
     extend: {
       fontSize: {
         'sf-xs': 'var(--font-size--xs)', // 12px
         'sf-sm': 'var(--font-size--sm)', // 14px
         'sf-base': 'var(--font-size--base)', // 16px
-        'sf-lg': 'var(--font-size--lg)' // 18px
+        'sf-lg': 'var(--font-size--lg)', // 18px
       },
       fontWeight: {
         'sf-light': 'var(--font-weight--light)', // 300
         'sf-normal': 'var(--font-weight--normal)', // 400
         'sf-medium': 'var(--font-weight--medium)', // 500
         'sf-semibold': 'var(--font-weight--semibold)', // 600
-        'sf-bold': 'var(--font-weight--bold)' // 700
+        'sf-bold': 'var(--font-weight--bold)', // 700
       },
       colors: {
         'sf-c-black': 'var(--c-black)', // #1d1f22
@@ -82,7 +81,7 @@ module.exports = {
         'sf-c-danger-lighten': 'var(--c-danger-lighten)', // #da3838
         'sf-c-danger-darken': 'var(--c-danger-darken)', //  #bc2323
         'sf-c-danger-variant': 'var(--c-danger-variant)', // #fcede8
-        'sf-c-on-danger': 'var(--c-on-danger)' // #ffffff
+        'sf-c-on-danger': 'var(--c-on-danger)', // #ffffff
       },
       spacing: {
         'sf-2xs': 'var(--spacer-2xs)', // 4px
@@ -92,14 +91,14 @@ module.exports = {
         'sf-lg': 'var(--spacer-lg)', // 32px
         'sf-xl': 'var(--spacer-xl)', // 40px
         'sf-2xl': 'var(--spacer-2xl)', // 80px
-        'sf-3xl': 'var(--spacer-3xl)' // 160px
+        'sf-3xl': 'var(--spacer-3xl)', // 160px
       },
       fontFamily: {
         'sf-primary': 'var(--font-family--primary)', // "Roboto", serif
-        'sf-secondary': 'var(--font-family--secondary)' // "Raleway", sans-serif
-      }
-    }
+        'sf-secondary': 'var(--font-family--secondary)', // "Raleway", sans-serif
+      },
+    },
   },
   variants: {},
-  plugins: []
+  plugins: [],
 };
