@@ -105,7 +105,7 @@
     </LazyHydrate>
 
     <LazyHydrate when-visible>
-      <NewsletterModal @email-submitted="onSubscribe" />
+      <NewsletterModal @email-submitted="onSubscribe" :loading="loading" />
     </LazyHydrate>
 
     <LazyHydrate when-visible>
@@ -133,11 +133,16 @@ import NewsletterModal from '~/components/NewsletterModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import { useUiState } from '../composables';
 import { useNewsLetter } from '@vue-storefront/odoo';
+import cacheControl from './../helpers/cacheControl';
 import { addBasePath } from '@vue-storefront/core';
 import { useUiNotification } from '~/composables';
 
 export default {
   name: 'Home',
+  middleware: cacheControl({
+    'max-age': 60,
+    'stale-when-revalidate': 5
+  }),
   components: {
     InstagramFeed,
     SfHero,
@@ -156,7 +161,7 @@ export default {
   },
   setup() {
     const { $config } = useContext();
-    const { sendSubscription } = useNewsLetter();
+    const { sendSubscription, loading } = useNewsLetter();
     const { toggleNewsletterModal } = useUiState();
     const { send } = useUiNotification();
 
@@ -313,7 +318,8 @@ export default {
       addBasePath,
       banners,
       heroes,
-      products
+      products,
+      loading
     };
   }
 };
