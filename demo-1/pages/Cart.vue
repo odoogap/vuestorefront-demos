@@ -8,14 +8,15 @@
       <div v-if="totalItems" class="detailed-cart__aside">
         <SfOrderSummary
           :products="products"
-          orderTitle="totals"
+          orderTitle="Totals"
           :total-items="totalItems"
+          class="oderSummary"
         >
           <template #summary>
             <div v-for="item in summary" :key="item.name" class="mb-3">
               <SfProperty
                 :name="item.name"
-                class="sf-property--full-width sf-property--large my-cart__total-price"
+                class="sf-property--full-width sf-property--large my-cart__total-price property-data"
               >
                 <template #value>
                   <span class="card__text" v-if="item.name === 'Products'">
@@ -82,7 +83,8 @@
                   call 1.888.282.6060. <br />
                   <span class="text-primary">•</span> Shipping internationally?
                   Choose your destination & currency. <br />
-                  <span class="text-primary">•</span> Shipping methods & charges
+                  <span class="text-primary">•</span> Shipping methods &
+                  charges. <br />
                 </div>
               </div>
             </div>
@@ -265,8 +267,7 @@ export default {
   &__heading {
     --heading-title-margin: 0 0 var(--spacer-xl) 0;
     --heading-title-font-weight: var(--font-weight--bold);
-    --heading-padding: 0;
-    --heading-title-margin: 0 0 var(--spacer-xl) 0;
+    --heading-title-margin: 0 0 var(--spacer-xl) 30px;
     --heading-title-font-size: var(--h3-font-size);
     @include for-desktop {
       --heading-title-font-weight: var(--font-weight--semibold);
@@ -326,7 +327,7 @@ export default {
       flex: 0 0 26.8125rem;
       order: 1;
       margin: 0 0 0 var(--spacer-xl);
-      padding: var(--spacer-xl);
+      padding: var(--spacer-xl) 26px var(--spacer-xl) 26px;
     }
   }
 }
@@ -387,11 +388,11 @@ hr {
 }
 .card__text {
   color: black;
-  font-size: 20px;
+  font-size: 16px;
 
   font-family: Raleway;
   font-style: normal;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .custom__width {
@@ -400,7 +401,6 @@ hr {
 
 .bottom__text {
   width: 400px;
-  height: 146px;
 
   /* Desktop Bullet Text */
 
@@ -447,6 +447,15 @@ hr {
     &__button {
       --button-width: 20.9375rem;
     }
+  }
+}
+</style>
+
+<style lang="scss">
+@import '~@storefront-ui/vue/styles';
+.oderSummary .sf-order-summary {
+  &__property {
+    font-size: var(--font-size-xl);
   }
 }
 </style>

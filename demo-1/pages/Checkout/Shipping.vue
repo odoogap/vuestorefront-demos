@@ -95,8 +95,8 @@
           >
             <SfSelectOption
               v-for="countryOption in countries"
-              :key="countryOption.id"
-              :value="countryOption.id"
+              :key="countryOption && countryOption.id"
+              :value="countryOption && countryOption.id"
             >
               {{ countryOption.name }}
             </SfSelectOption>
@@ -246,7 +246,6 @@ export default {
     const handleFormSubmit = async () => {
       await save({ shippingDetails: form.value });
       isFormSubmitted.value = true;
-
       if (root.$router.history.current.path !== '/my-account/shipping-details')
         root.$router.push('/checkout/billing');
       else root.$router.push('/my-account/shipping-details');
@@ -295,7 +294,9 @@ export default {
       async () => {
         await searchCountryStates(form.value.country.id);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = 1;
+          form.value.state.id = 0;
+        } else {
+          form.value.state.id = countryStates.value[0].id;
         }
       },
     );
