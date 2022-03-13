@@ -13,7 +13,7 @@
           class="oderSummary"
         >
           <template #summary>
-            <div v-for="item in summary" :key="item.name" class="mb-3">
+            <div v-for="item in summary" :key="item.name" class="mb-3 px-7">
               <SfProperty
                 :name="item.name"
                 class="sf-property--full-width sf-property--large my-cart__total-price property-data"
@@ -33,10 +33,10 @@
               </SfProperty>
             </div>
 
-            <div class="my-7">
+            <div class="my-7 px-7">
               <hr />
             </div>
-            <div class="mb-5">
+            <div class="mb-5 px-7">
               <SfProperty class="sf-property--full-width sf-property--large">
                 <template #name>
                   <span class="card__text">Total Price:</span>
@@ -454,6 +454,9 @@ hr {
 <style lang="scss">
 @import '~@storefront-ui/vue/styles';
 .oderSummary .sf-order-summary {
+  &__heading {
+    padding-left: 30px;
+  }
   &__property {
     font-size: var(--font-size-xl);
   }
