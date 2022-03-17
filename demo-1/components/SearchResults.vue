@@ -28,8 +28,8 @@
                 <SfMenuItem
                   :label="category.label"
                   :link="uiHelper.getCatLinkForSearch(category)"
+                  icon="chevron_right"
                 >
-                  <template #mobile-nav-icon> &#8203; </template>
                 </SfMenuItem>
               </SfListItem>
             </SfList>
@@ -73,6 +73,14 @@
                   @click="$emit('close')"
                 />
               </div>
+              <div class="sf-button--text">
+                <SfButton
+                  class="sf-button--text custom__text"
+                  @click="$emit('close')"
+                >
+                  {{ $t('See all results') }}
+                </SfButton>
+              </div>
             </SfScrollable>
             <div class="results--mobile smartphone-only">
               <SfProductCard
@@ -97,6 +105,12 @@
             </div>
           </SfMegaMenuColumn>
           <div class="action-buttons smartphone-only">
+            <SfButton
+              class="action-buttons__button color-secondary mb-4"
+              @click="$emit('close')"
+            >
+              {{ $t('See all results') }}
+            </SfButton>
             <SfButton
               class="action-buttons__button color-light"
               @click="$emit('close')"
@@ -160,16 +174,16 @@ export default {
     SfScrollable,
     SfMenuItem,
     SfButton,
-    SfImage
+    SfImage,
   },
   props: {
     visible: {
       type: Boolean,
-      default: false
+      default: false,
     },
     result: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   watch: {
     $route() {
@@ -186,7 +200,7 @@ export default {
 
     const goToProduct = (product) => {
       return `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-        product
+        product,
       )}`;
     };
     watch(
@@ -199,7 +213,7 @@ export default {
           document.body.classList.remove('no-scroll');
           emit('removeSearchResults');
         }
-      }
+      },
     );
     return {
       addItemToWishlist,
@@ -209,9 +223,9 @@ export default {
       categoryGetters,
       productGetters,
       products,
-      categories
+      categories,
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -274,7 +288,7 @@ export default {
   background: var(--c-white);
   width: 100%;
   &__button {
-    width: calc(100% - 32px);
+    width: 100%;
   }
 }
 .results-listing {
@@ -287,6 +301,13 @@ export default {
   @include for-desktop {
     margin: var(--spacer-2xs) 0;
   }
+}
+.custom__text {
+  color: #0468db;
+  margin-top: 40px;
+}
+.custom__text:hover {
+  color: #5ece7b;
 }
 .before-results {
   box-sizing: border-box;
