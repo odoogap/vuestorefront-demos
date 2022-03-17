@@ -97,8 +97,8 @@
               :link="
                 localePath(
                   `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-                    product
-                  )}`
+                    product,
+                  )}`,
                 )
               "
               class="products__product-card"
@@ -148,8 +148,8 @@
               :link="
                 localePath(
                   `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-                    product
-                  )}`
+                    product,
+                  )}`,
                 )
               "
             >
@@ -254,7 +254,7 @@ import {
   SfProperty,
   SfBreadcrumbs,
   SfLoader,
-  SfImage
+  SfImage,
 } from '@storefront-ui/vue';
 import { ref, computed, onMounted } from '@nuxtjs/composition-api';
 import {
@@ -262,7 +262,7 @@ import {
   useWishlist,
   productGetters,
   useFacet,
-  facetGetters
+  facetGetters,
 } from '@vue-storefront/odoo';
 import { useCache, CacheTagPrefix } from '@vue-storefront/cache';
 import { useUiHelpers, useUiState } from '~/composables';
@@ -282,19 +282,19 @@ export default {
     const {
       addItem: addItemToWishlist,
       removeItem: removeItemFromWishList,
-      isInWishlist
+      isInWishlist,
     } = useWishlist();
     const { result, search, loading } = useFacet();
     const { params } = root.$router.history.current;
 
     const products = computed(() => facetGetters.getProducts(result.value));
     const categoryTree = computed(() =>
-      facetGetters.getCategoryTree(result.value)
+      facetGetters.getCategoryTree(result.value),
     );
 
     const pagination = computed(() => facetGetters.getPagination(result.value));
     const showProducts = computed(
-      () => !loading.value && products.value?.length > 0
+      () => !loading.value && products.value?.length > 0,
     );
 
     const currentCategory = computed(() => {
@@ -325,14 +325,14 @@ export default {
       facetGetters.getBreadcrumbs({
         input: {
           params,
-          currentRootCategory: currentRootCategory.value
-        }
-      })
+          currentRootCategory: currentRootCategory.value,
+        },
+      }),
     );
 
     onSSR(async () => {
       const params = {
-        ...th.getFacetsFromURL()
+        ...th.getFacetsFromURL(),
       };
 
       await search(params);
@@ -340,8 +340,8 @@ export default {
       addTags([
         {
           prefix: CacheTagPrefix.Category,
-          value: currentRootCategory.value.id || params.slug_2
-        }
+          value: currentRootCategory.value.id || params.slug_2,
+        },
       ]);
     });
 
@@ -368,7 +368,7 @@ export default {
       isInCart,
       showProducts,
       result,
-      currentCategoryNameForAccordion
+      currentCategoryNameForAccordion,
     };
   },
   components: {
@@ -386,8 +386,8 @@ export default {
     SfCheckbox,
     SfLoader,
     LazyHydrate,
-    SfImage
-  }
+    SfImage,
+  },
 };
 </script>
 

@@ -182,7 +182,11 @@ export default {
       }
       if (term.value.length < 2) return;
 
-      await searchProductApi({ search: term.value, pageSize: 12 });
+      await searchProductApi({
+        search: term.value,
+        pageSize: 12,
+        currentPage: 1,
+      });
       formatedResult.value = {
         products: result?.value?.data?.products,
         categories: result?.value?.data?.categories

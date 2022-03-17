@@ -27,12 +27,7 @@
             <SfList v-if="categories.length">
               <SfListItem v-for="(category, key) in categories" :key="key">
                 <SfMenuItem
-                  :label="
-                    category.label.replace(
-                      new RegExp('dress', 'gi'),
-                      (match) => `</span>${match}</span>`,
-                    )
-                  "
+                  :label="category.label"
                   :link="uiHelper.getCatLinkForSearch(category)"
                   icon="chevron_right"
                 >
