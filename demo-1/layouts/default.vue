@@ -65,6 +65,9 @@ export default {
 
 .no-scroll {
   overflow: scroll;
+  @include for-mobile {
+    overflow: hidden;
+  }
   height: 100vh;
 }
 
