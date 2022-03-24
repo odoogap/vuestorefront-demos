@@ -58,8 +58,15 @@
                   :valid="!errors[0]"
                   :errorMessage="errors[0]"
                   name="password"
+                  :icon="{ icon: 'show_password' }"
+                  type:icon="text"
                   label="Your password"
-                  type="password"
+                  @click:icon="
+                    {
+                      showPassword = !showPassword;
+                    }
+                  "
+                  :type="showPassword ? 'text' : 'password'"
                   class="form__element"
                 />
               </ValidationProvider>
@@ -185,7 +192,12 @@
                 :errorMessage="errors[0]"
                 name="password"
                 label="Password"
-                type="password"
+                @click:icon="
+                  {
+                    showPassword = !showPassword;
+                  }
+                "
+                :type="showPassword ? 'text' : 'password'"
                 class="form__element"
               />
             </ValidationProvider>
@@ -305,6 +317,7 @@ export default {
     const { send } = useUiNotification();
     const form = ref({});
 
+    const showPassword = ref(false);
     const isLogin = ref(true);
     const isForgottenPassword = ref(false);
     const isCreateAccount = ref(true);
@@ -375,6 +388,7 @@ export default {
 
     return {
       form,
+      showPassword,
       loading,
       errorPassword,
       isLogin,
