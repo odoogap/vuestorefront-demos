@@ -46,11 +46,7 @@
                 <template #mobile-nav-icon> &#8203; </template>
               </SfMenuItem>
             </template>
-            <SfScrollable
-              class="results--desktop desktop-only"
-              show-text=""
-              hide-text=""
-            >
+            <div class="results--desktop desktop-only">
               <div class="results-listing">
                 <SfProductCard
                   v-for="(product, index) in products"
@@ -81,7 +77,7 @@
                   {{ $t('See all results') }}
                 </SfButton>
               </div>
-            </SfScrollable>
+            </div>
             <div class="results--mobile smartphone-only">
               <SfProductCard
                 v-for="(product, index) in products"
@@ -316,6 +312,7 @@ export default {
   text-align: center;
   @include for-desktop {
     padding: 0;
+    height: 100vh;
   }
   &__picture {
     --image-width: 230px;
