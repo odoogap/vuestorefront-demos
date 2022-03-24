@@ -192,6 +192,7 @@
                 :errorMessage="errors[0]"
                 name="password"
                 label="Password"
+                :icon="{ icon: 'show_password' }"
                 @click:icon="
                   {
                     showPassword = !showPassword;
