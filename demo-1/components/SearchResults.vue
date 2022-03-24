@@ -97,7 +97,7 @@
                 "
                 :score-rating="productGetters.getAverageRating(product)"
                 :reviews-count="7"
-                :image="productGetters.getCoverImage(product)"
+                :image="$image(productGetters.getCoverImage(product))"
                 :alt="productGetters.getName(product)"
                 :title="productGetters.getName(product)"
                 :link="localePath(goToProduct(product))"
