@@ -88,15 +88,18 @@
             v-model="form.country.id"
             label="Country"
             name="country"
-            class="form__element form__element--half form__select sf-select--underlined"
+            class="
+              form__element form__element--half form__select
+              sf-select--underlined
+            "
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
             <SfSelectOption
               v-for="countryOption in countries"
-              :key="countryOption && countryOption.id"
-              :value="countryOption && countryOption.id"
+              :key="countryOption.id"
+              :value="countryOption.id"
             >
               {{ countryOption.name }}
             </SfSelectOption>
@@ -113,23 +116,25 @@
             v-model="form.state.id"
             label="State/Province"
             name="state"
-            class="form__element form__element--half form__select sf-select--underlined form__element--half-even"
-            :class="[
-              countryStates && countryStates.length ? 'visible' : 'invisible',
-            ]"
+            class="
+              form__element form__element--half form__select
+              sf-select--underlined
+              form__element--half-even
+            "
             required
             :valid="!errors[0]"
             :errorMessage="errors[0]"
           >
             <SfSelectOption
               v-for="countryStateOption in countryStates"
-              :key="countryStateOption && countryStateOption.id"
-              :value="countryStateOption && countryStateOption.id"
+              :key="countryStateOption.id"
+              :value="countryStateOption.id"
             >
               {{ countryStateOption.name }}
             </SfSelectOption>
           </SfSelect>
         </ValidationProvider>
+
         <ValidationProvider
           name="phone"
           rules="required|digits:9"
@@ -167,11 +172,7 @@
         @submit="$router.push('/checkout/billing')"
         @selectedMethod="handleSelectedMethodShipping"
       />
-      <SfButton
-        type="submit"
-        :disabled="!form.selectedMethodShipping || invalid"
-        class="sf-button--full-width mt-4"
-      >
+      <SfButton type="submit" :disabled="invalid">
         {{ $t('Continue to billing') }}
       </SfButton>
     </form>
@@ -180,14 +181,12 @@
 
 <script>
 import { SfHeading, SfInput, SfButton, SfSelect } from '@storefront-ui/vue';
-import { ref, watch, onMounted, computed } from '@vue/composition-api';
+import { ref, watch, onMounted, computed } from '@nuxtjs/composition-api';
 import {
   useCountrySearch,
   useUser,
-  useCart,
-  cartGetters,
   userShippingGetters,
-  useShipping,
+  useShipping
 } from '@vue-storefront/odoo';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
@@ -195,7 +194,7 @@ import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
 extend('required', { ...required, message: 'This field is required' });
 extend('min', {
   ...min,
-  message: 'The field should have at least {length} characters',
+  message: 'The field should have at least {length} characters'
 });
 extend('digits', { ...digits, message: 'Please provide a valid phone number' });
 
@@ -211,13 +210,9 @@ export default {
     UserShippingAddresses: () =>
       import('~/components/Checkout/UserShippingAddresses.vue'),
     VsfShippingProvider: () =>
-      import('~/components/Checkout/VsfShippingProvider'),
+      import('~/components/Checkout/VsfShippingProvider')
   },
   setup(props, { root, emit }) {
-    const { cart } = useCart();
-    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
-    if (totalItems.value === 0) root.$router.push('/cart');
-
     const isFormSubmitted = ref(false);
     const formRef = ref(false);
     const currentAddressId = ref('');
@@ -240,12 +235,19 @@ export default {
       country: { id: null },
       zip: '',
       phone: null,
-      selectedMethodShipping: null,
+      selectedMethodShipping: null
     });
 
     const handleFormSubmit = async () => {
-      await save({ shippingDetails: form.value });
+      await save({
+        params: {
+          ...form.value,
+          stateId: parseInt(form.value.state.id),
+          countryId: parseInt(form.value.country.id)
+        }
+      });
       isFormSubmitted.value = true;
+
       if (root.$router.history.current.path !== '/my-account/shipping-details')
         root.$router.push('/checkout/billing');
       else root.$router.push('/my-account/shipping-details');
@@ -294,17 +296,9 @@ export default {
       async () => {
         await searchCountryStates(form.value.country.id);
         if (!countryStates.value || countryStates.value.length === 0) {
-          form.value.state.id = 0;
-        } else {
-          form.value.state.id = countryStates.value[0].id;
+          form.value.state.id = null;
         }
-      },
-    );
-    watch(
-      () => totalItems.value,
-      () => {
-        if (totalItems.value === 0) root.$router.push('/cart');
-      },
+      }
     );
 
     return {
@@ -323,9 +317,9 @@ export default {
       form,
       countries,
       countryStates,
-      handleFormSubmit,
+      handleFormSubmit
     };
-  },
+  }
 };
 </script>
 
