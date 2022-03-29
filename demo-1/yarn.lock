@@ -2198,6 +2198,15 @@
     "@vue-storefront/core" "2.5.4"
     "@vue-storefront/odoo-api" "1.4.0-rc.4"
 
+"@vue-storefront/odoo@^1.4.0-rc.3":
+  version "1.4.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo/-/odoo-1.4.0-rc.3.tgz#bef35dbb8c5b3e01e86c93270cd3f200ad6642d6"
+  integrity sha512-eLbkn6MKTRF/4/oEvWNUEj/D6XJlN9jWpGmEqUE+EYm5VN7g3drcmBmXU4raKCGplo6+X2XQ1+ATtgAASA3aUw==
+  dependencies:
+    "@nuxtjs/composition-api" "0.31.0"
+    "@vue-storefront/core" "2.5.4"
+    "@vue-storefront/odoo-api" "1.4.0-rc.3"
+
 "@vue/babel-helper-vue-jsx-merge-props@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@vue/babel-helper-vue-jsx-merge-props/-/babel-helper-vue-jsx-merge-props-1.2.1.tgz#31624a7a505fb14da1d58023725a4c5f270e6a81"
