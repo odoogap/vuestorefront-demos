@@ -70,6 +70,12 @@
           aria-label="Search"
           class="sf-header__search"
           :value="term"
+          :icon="{
+            icon: !!term ? 'cross' : 'search',
+            size: '1.25rem',
+            color: '#43464E',
+          }"
+          @click:icon="closeOrFocusSearchBar"
           @input="handleSearch"
           @keydown.enter="handleSearch($event)"
           @focus="isSearchOpen = true"
@@ -119,7 +125,7 @@ import {
   SfButton,
   SfOverlay,
   SfBadge,
-  SfHeader
+  SfHeader,
 } from '@storefront-ui/vue';
 import { useUiState } from '~/composables';
 import {
@@ -129,7 +135,7 @@ import {
   cartGetters,
   categoryGetters,
   useCategory,
-  useFacet
+  useFacet,
 } from '@vue-storefront/odoo';
 import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
 import { computed, ref, watch } from '@nuxtjs/composition-api';
@@ -177,7 +183,7 @@ export default {
       return count ? count.toString() : null;
     });
     const accountIcon = computed(() =>
-      isAuthenticated.value ? 'profile_fill' : 'profile'
+      isAuthenticated.value ? 'profile_fill' : 'profile',
     );
 
     const removeSearchResults = () => {
@@ -201,14 +207,14 @@ export default {
       await searchProductApi({
         search: term.value,
         pageSize: 12,
-        fetchCategory: true
+        fetchCategory: true,
       });
 
       formatedResult.value = {
         products: result?.value?.data?.products,
         categories: result?.value?.data?.categories
           .filter((category) => category.childs === null)
-          .map((category) => categoryGetters.getTree(category))
+          .map((category) => categoryGetters.getTree(category)),
       };
     }, 100);
     const closeOrFocusSearchBar = () => {
@@ -229,8 +235,8 @@ export default {
 
     const filteredTopCategories = computed(() =>
       topCategories.value.filter(
-        (cat) => cat.name === 'WOMEN' || cat.name === 'MEN'
-      )
+        (cat) => cat.name === 'WOMEN' || cat.name === 'MEN',
+      ),
     );
 
     watch(
