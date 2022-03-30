@@ -305,7 +305,9 @@ export default {
     height: 100%;
   }
 }
-
+.sf-input {
+  --input-padding: 0 10px;
+}
 .header-on-top {
   z-index: 2;
 }
