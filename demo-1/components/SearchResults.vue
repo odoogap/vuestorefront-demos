@@ -13,10 +13,7 @@
         >
           <SfMegaMenuColumn
             :title="$t('Categories')"
-            class="
-              sf-mega-menu-column--pined-content-on-mobile
-              search__categories
-            "
+            class="sf-mega-menu-column--pined-content-on-mobile search__categories"
           >
             <template #title="{ title }">
               <SfMenuItem :label="title" @click="megaMenu.changeActive(title)">
@@ -115,27 +112,41 @@
             </SfButton>
           </div>
         </div>
-        <div v-else key="no-results" class="before-results">
-          <SfImage
-            :width="256"
-            :height="176"
-            src="/error/error.svg"
-            class="before-results__picture"
-            alt="error"
-            loading="lazy"
-          />
-          <p class="before-results__paragraph">
-            {{ $t('You haven’t searched for items yet') }}
-          </p>
-          <p class="before-results__paragraph">
-            {{ $t('Let’s start now – we’ll help you') }}
-          </p>
-          <SfButton
-            class="before-results__button color-secondary smartphone-only"
-            @click="$emit('close')"
-          >
-            {{ $t('Go back') }}
-          </SfButton>
+        <div v-else class="before-results">
+          <div v-if="term">
+            <div v-if="searchLoading">
+              <p class="before-results__paragraph">
+                {{ $t('Loading...') }}
+              </p>
+            </div>
+            <div v-else>
+              <p class="before-results__paragraph">
+                {{ $t('There is not any matched result') }}
+              </p>
+            </div>
+          </div>
+          <div v-else key="no-results">
+            <SfImage
+              :width="256"
+              :height="176"
+              src="/error/error.svg"
+              class="before-results__picture"
+              alt="error"
+              loading="lazy"
+            />
+            <p class="before-results__paragraph">
+              {{ $t('You haven’t searched for items yet') }}
+            </p>
+            <p class="before-results__paragraph">
+              {{ $t('Let’s start now – we’ll help you') }}
+            </p>
+            <SfButton
+              class="before-results__button color-secondary smartphone-only"
+              @click="$emit('close')"
+            >
+              {{ $t('Go back') }}
+            </SfButton>
+          </div>
         </div>
       </transition>
     </SfMegaMenu>
@@ -150,13 +161,13 @@ import {
   SfScrollable,
   SfMenuItem,
   SfButton,
-  SfImage
+  SfImage,
 } from '@storefront-ui/vue';
 import { ref, watch, computed } from '@nuxtjs/composition-api';
 import {
   productGetters,
   categoryGetters,
-  useWishlist
+  useWishlist,
 } from '@vue-storefront/odoo';
 import { useUiHelpers } from '~/composables';
 
@@ -180,16 +191,24 @@ export default {
     result: {
       type: Object,
     },
+    term: {
+      type: String,
+    },
+    searchLoading: {
+      type: Boolean,
+    },
   },
   watch: {
     $route() {
       this.$emit('close');
       this.$emit('removeSearchResults');
-    }
+    },
   },
   setup(props, { emit }) {
     const uiHelper = useUiHelpers();
     const isSearchOpen = ref(props.visible);
+    const term = ref(props.term);
+    const searchLoading = ref(props.searchLoading);
     const products = computed(() => props.result?.products);
     const categories = computed(() => props.result?.categories);
     const { addItem: addItemToWishlist } = useWishlist();
@@ -220,6 +239,8 @@ export default {
       productGetters,
       products,
       categories,
+      term,
+      searchLoading,
     };
   },
 };

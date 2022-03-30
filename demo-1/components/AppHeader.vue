@@ -110,6 +110,8 @@
     <SearchResults
       :visible="isSearchOpen"
       :result="formatedResult"
+      :term="term"
+      :searchLoading="searchLoading"
       @close="closeSearch"
       @removeSearchResults="removeSearchResults"
     />
@@ -172,7 +174,11 @@ export default {
     const { load: loadUser, isAuthenticated } = useUser();
     const { load: loadCart, cart } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
-    const { search: searchProductApi, result } = useFacet('AppHeader:Search');
+    const {
+      search: searchProductApi,
+      result,
+      loading: searchLoading,
+    } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategory('AppHeader:TopCategories');
 
@@ -252,7 +258,6 @@ export default {
         }
       },
     );
-
     onSSR(async () => {
       await Promise.all([
         searchTopCategoryApi({
@@ -284,6 +289,7 @@ export default {
       isMobile,
       handleSearch,
       closeSearch,
+      searchLoading,
     };
   },
 };
