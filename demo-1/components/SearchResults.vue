@@ -16,7 +16,11 @@
             class="sf-mega-menu-column--pined-content-on-mobile search__categories"
           >
             <template #title="{ title }">
-              <SfMenuItem :label="title" @click="megaMenu.changeActive(title)">
+              <SfMenuItem
+                :label="title"
+                @click="megaMenu.changeActive(title)"
+                class="sf-mega-menu-column__header"
+              >
                 <template #mobile-nav-icon> &#8203; </template>
               </SfMenuItem>
             </template>
