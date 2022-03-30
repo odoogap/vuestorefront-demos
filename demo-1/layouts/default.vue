@@ -10,7 +10,6 @@
     <div id="layout">
       <nuxt :key="$route.fullPath" />
 
-
       <MobileMenuSidebar />
       <LazyHydrate when-visible>
         <BottomNavigation />
@@ -66,7 +65,7 @@ export default {
 }
 
 .no-scroll {
-  overflow: scroll;
+  overflow: hidden;
   @include for-mobile {
     overflow: hidden;
   }
@@ -81,6 +80,7 @@ html {
   }
 }
 body {
+  overflow-y: auto !important;
   overflow-x: hidden;
   color: var(--c-text);
   font-size: var(--font-size--base);

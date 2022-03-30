@@ -1,19 +1,19 @@
 <template>
   <div>
     <div id="layout">
-      <nuxt :key="$route.fullPath"/>
+      <nuxt :key="$route.fullPath" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'BlankLayout'
+  name: 'BlankLayout',
 };
 </script>
 
 <style lang="scss">
-@import "~@storefront-ui/vue/styles";
+@import '~@storefront-ui/vue/styles';
 
 #layout {
   box-sizing: border-box;
@@ -36,6 +36,7 @@ html {
   }
 }
 body {
+  overflow-y: auto !important;
   overflow-x: hidden;
   color: var(--c-text);
   font-size: var(--font-size--base);
