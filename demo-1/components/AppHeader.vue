@@ -80,7 +80,6 @@
           @keydown.enter="handleSearch($event)"
           @focus="isSearchOpen = true"
           @keydown.esc="closeSearch"
-          v-click-outside="closeSearch"
         >
           <template #icon>
             <SfButton
@@ -228,6 +227,7 @@ export default {
         return closeSearch();
       }
       term.value = '';
+      closeSearch();
       return searchBarRef.value.$el.children[0].focus();
     };
     // TODO: https://github.com/DivanteLtd/vue-storefront/issues/4927
