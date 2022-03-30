@@ -117,6 +117,14 @@
           </div>
         </div>
         <div v-else class="before-results">
+          <SfImage
+            :width="256"
+            :height="276"
+            src="/error/error.svg"
+            class="before-results__picture"
+            alt="error"
+            loading="lazy"
+          />
           <div v-if="term">
             <div v-if="searchLoading">
               <p class="before-results__paragraph">
@@ -125,19 +133,11 @@
             </div>
             <div v-else>
               <p class="before-results__paragraph">
-                {{ $t('There is not any matched result') }}
+                {{ $t("Sorry, we didn't find what you're looking for.") }}
               </p>
             </div>
           </div>
           <div v-else key="no-results">
-            <SfImage
-              :width="256"
-              :height="176"
-              src="/error/error.svg"
-              class="before-results__picture"
-              alt="error"
-              loading="lazy"
-            />
             <p class="before-results__paragraph">
               {{ $t('You haven’t searched for items yet') }}
             </p>

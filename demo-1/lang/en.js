@@ -142,7 +142,8 @@ export default {
   'Terms and conditions': 'Terms and conditions',
   'Total price': 'Total price',
   Total: 'Total',
-  'There is not any matched result': 'There is not any matched result',
+  "Sorry, we didn't find what you're looking for.":
+    "Sorry, we didn't find what you're looking for.",
   'Update password': 'Update password',
   'Update personal data': 'Update personal data',
   'Use your personal data':
