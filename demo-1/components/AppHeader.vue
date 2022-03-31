@@ -70,11 +70,16 @@
           aria-label="Search"
           class="sf-header__search"
           :value="term"
+          :icon="{
+            icon: !!term ? 'cross' : 'search',
+            size: '1.25rem',
+            color: '#43464E',
+          }"
+          @click:icon="closeOrFocusSearchBar"
           @input="handleSearch"
           @keydown.enter="handleSearch($event)"
           @focus="isSearchOpen = true"
           @keydown.esc="closeSearch"
-          v-click-outside="closeSearch"
         >
           <template #icon>
             <SfButton
@@ -104,6 +109,8 @@
     <SearchResults
       :visible="isSearchOpen"
       :result="formatedResult"
+      :term="term"
+      :searchLoading="searchLoading"
       @close="closeSearch"
       @removeSearchResults="removeSearchResults"
     />
@@ -119,7 +126,7 @@ import {
   SfButton,
   SfOverlay,
   SfBadge,
-  SfHeader
+  SfHeader,
 } from '@storefront-ui/vue';
 import { useUiState } from '~/composables';
 import {
@@ -129,7 +136,7 @@ import {
   cartGetters,
   categoryGetters,
   useCategory,
-  useFacet
+  useFacet,
 } from '@vue-storefront/odoo';
 import { clickOutside } from '@storefront-ui/vue/src/utilities/directives/click-outside/click-outside-directive.js';
 import { computed, ref, watch } from '@nuxtjs/composition-api';
@@ -150,7 +157,7 @@ export default {
     LocaleSelector,
     SearchResults,
     SfOverlay,
-    SfBadge
+    SfBadge,
   },
   directives: { clickOutside },
   setup(props, { root }) {
@@ -166,7 +173,11 @@ export default {
     const { load: loadUser, isAuthenticated } = useUser();
     const { load: loadCart, cart } = useCart();
     const { load: loadWishlist, wishlist } = useWishlist();
-    const { search: searchProductApi, result } = useFacet('AppHeader:Search');
+    const {
+      search: searchProductApi,
+      result,
+      loading: searchLoading,
+    } = useFacet('AppHeader:Search');
     const { categories: topCategories, search: searchTopCategoryApi } =
       useCategory('AppHeader:TopCategories');
 
@@ -177,7 +188,7 @@ export default {
       return count ? count.toString() : null;
     });
     const accountIcon = computed(() =>
-      isAuthenticated.value ? 'profile_fill' : 'profile'
+      isAuthenticated.value ? 'profile_fill' : 'profile',
     );
 
     const removeSearchResults = () => {
@@ -201,14 +212,14 @@ export default {
       await searchProductApi({
         search: term.value,
         pageSize: 12,
-        fetchCategory: true
+        fetchCategory: true,
       });
 
       formatedResult.value = {
         products: result?.value?.data?.products,
         categories: result?.value?.data?.categories
           .filter((category) => category.childs === null)
-          .map((category) => categoryGetters.getTree(category))
+          .map((category) => categoryGetters.getTree(category)),
       };
     }, 100);
     const closeOrFocusSearchBar = () => {
@@ -216,6 +227,7 @@ export default {
         return closeSearch();
       }
       term.value = '';
+      closeSearch();
       return searchBarRef.value.$el.children[0].focus();
     };
     // TODO: https://github.com/DivanteLtd/vue-storefront/issues/4927
@@ -229,8 +241,8 @@ export default {
 
     const filteredTopCategories = computed(() =>
       topCategories.value.filter(
-        (cat) => cat.name === 'WOMEN' || cat.name === 'MEN'
-      )
+        (cat) => cat.name === 'WOMEN' || cat.name === 'MEN',
+      ),
     );
 
     watch(
@@ -244,23 +256,22 @@ export default {
         if (shouldSearchBeOpened) {
           isSearchOpen.value = true;
         }
-      }
+      },
     );
-
     onSSR(async () => {
       await Promise.all([
         searchTopCategoryApi({
-          filter: { parent: true }
+          filter: { parent: true },
         }),
         loadUser(),
         loadWishlist(),
-        loadCart()
+        loadCart(),
       ]);
     });
 
     return {
       wishlistHasItens: computed(
-        () => wishlist.value?.wishlistItems.length > 0
+        () => wishlist.value?.wishlistItems.length > 0,
       ),
       filteredTopCategories,
       accountIcon,
@@ -277,13 +288,14 @@ export default {
       term,
       isMobile,
       handleSearch,
-      closeSearch
+      closeSearch,
+      searchLoading,
     };
-  }
+  },
 };
 </script>
 
-<style lang='scss' scoped >
+<style lang="scss" scoped>
 .sf-header {
   --header-padding: var(--spacer-sm);
   @include for-desktop {
@@ -292,6 +304,9 @@ export default {
   &__logo-image {
     height: 100%;
   }
+}
+.sf-input {
+  --input-padding: 0 10px;
 }
 .header-on-top {
   z-index: 2;
@@ -307,5 +322,4 @@ export default {
   bottom: 40%;
   left: 40%;
 }
-</style>
 </style>

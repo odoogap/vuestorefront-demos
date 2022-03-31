@@ -13,13 +13,14 @@
         >
           <SfMegaMenuColumn
             :title="$t('Categories')"
-            class="
-              sf-mega-menu-column--pined-content-on-mobile
-              search__categories
-            "
+            class="sf-mega-menu-column--pined-content-on-mobile search__categories"
           >
             <template #title="{ title }">
-              <SfMenuItem :label="title" @click="megaMenu.changeActive(title)">
+              <SfMenuItem
+                :label="title"
+                @click="megaMenu.changeActive(title)"
+                class="sf-mega-menu-column__header"
+              >
                 <template #mobile-nav-icon> &#8203; </template>
               </SfMenuItem>
             </template>
@@ -28,8 +29,8 @@
                 <SfMenuItem
                   :label="category.label"
                   :link="uiHelper.getCatLinkForSearch(category)"
+                  icon="chevron_right"
                 >
-                  <template #mobile-nav-icon> &#8203; </template>
                 </SfMenuItem>
               </SfListItem>
             </SfList>
@@ -46,11 +47,7 @@
                 <template #mobile-nav-icon> &#8203; </template>
               </SfMenuItem>
             </template>
-            <SfScrollable
-              class="results--desktop desktop-only"
-              show-text=""
-              hide-text=""
-            >
+            <div class="results--desktop desktop-only">
               <div class="results-listing">
                 <SfProductCard
                   v-for="(product, index) in products"
@@ -59,6 +56,11 @@
                   :regular-price="
                     $n(productGetters.getPrice(product).regular, 'currency')
                   "
+                  :special-price="
+                    productGetters.getPrice(product).special &&
+                    $n(productGetters.getPrice(product).special, 'currency')
+                  "
+                  :show-add-to-cart-button="true"
                   :imageWidth="216"
                   :imageHeight="288"
                   :nuxtImgConfig="{ fit: 'cover' }"
@@ -69,11 +71,27 @@
                   :alt="productGetters.getName(product)"
                   :title="productGetters.getName(product)"
                   :link="localePath(goToProduct(product))"
-                  @click:wishlist="addItemToWishlist({ product })"
+                  :isInWishlist="isInWishlist({ product })"
+                  @click:wishlist="
+                    isInWishlist({ product })
+                      ? removeItemFromWishList({ product: { product } })
+                      : addItemToWishlist({ product })
+                  "
+                  @click:add-to-cart="addItemToCart({ product, quantity: 1 })"
                   @click="$emit('close')"
                 />
               </div>
-            </SfScrollable>
+              <div class="sf-button--text">
+                <nuxt-link :to="'/c/all-searh-result/' + term">
+                  <SfButton
+                    class="sf-button--text custom__text"
+                    @click="$emit('close')"
+                  >
+                    {{ $t('See all results') }}
+                  </SfButton>
+                </nuxt-link>
+              </div>
+            </div>
             <div class="results--mobile smartphone-only">
               <SfProductCard
                 v-for="(product, index) in products"
@@ -86,17 +104,36 @@
                 :regular-price="
                   $n(productGetters.getPrice(product).regular, 'currency')
                 "
+                :special-price="
+                  productGetters.getPrice(product).special &&
+                  $n(productGetters.getPrice(product).special, 'currency')
+                "
                 :score-rating="productGetters.getAverageRating(product)"
                 :reviews-count="7"
                 :image="$image(productGetters.getCoverImage(product))"
                 :alt="productGetters.getName(product)"
                 :title="productGetters.getName(product)"
                 :link="localePath(goToProduct(product))"
+                :show-add-to-cart-button="true"
+                :isInWishlist="isInWishlist({ product })"
+                @click:wishlist="
+                  isInWishlist({ product })
+                    ? removeItemFromWishList({ product: { product } })
+                    : addItemToWishlist({ product })
+                "
                 @click="$emit('close')"
               />
             </div>
           </SfMegaMenuColumn>
           <div class="action-buttons smartphone-only">
+            <nuxt-link :to="'/c/all-searh-result/' + term">
+              <SfButton
+                class="action-buttons__button color-secondary mb-4"
+                @click="$emit('close')"
+              >
+                {{ $t('See all results') }}
+              </SfButton>
+            </nuxt-link>
             <SfButton
               class="action-buttons__button color-light"
               @click="$emit('close')"
@@ -105,27 +142,41 @@
             </SfButton>
           </div>
         </div>
-        <div v-else key="no-results" class="before-results">
+        <div v-else class="before-results">
           <SfImage
             :width="256"
-            :height="176"
+            :height="276"
             src="/error/error.svg"
             class="before-results__picture"
             alt="error"
             loading="lazy"
           />
-          <p class="before-results__paragraph">
-            {{ $t('You haven’t searched for items yet') }}
-          </p>
-          <p class="before-results__paragraph">
-            {{ $t('Let’s start now – we’ll help you') }}
-          </p>
-          <SfButton
-            class="before-results__button color-secondary smartphone-only"
-            @click="$emit('close')"
-          >
-            {{ $t('Go back') }}
-          </SfButton>
+          <div v-if="term">
+            <div v-if="searchLoading">
+              <p class="before-results__paragraph">
+                {{ $t('Loading...') }}
+              </p>
+            </div>
+            <div v-else>
+              <p class="before-results__paragraph">
+                {{ $t("Sorry, we didn't find what you're looking for.") }}
+              </p>
+            </div>
+          </div>
+          <div v-else key="no-results">
+            <p class="before-results__paragraph">
+              {{ $t('You haven’t searched for items yet') }}
+            </p>
+            <p class="before-results__paragraph">
+              {{ $t('Let’s start now – we’ll help you') }}
+            </p>
+            <SfButton
+              class="before-results__button color-secondary smartphone-only"
+              @click="$emit('close')"
+            >
+              {{ $t('Go back') }}
+            </SfButton>
+          </div>
         </div>
       </transition>
     </SfMegaMenu>
@@ -140,13 +191,14 @@ import {
   SfScrollable,
   SfMenuItem,
   SfButton,
-  SfImage
+  SfImage,
 } from '@storefront-ui/vue';
 import { ref, watch, computed } from '@nuxtjs/composition-api';
 import {
   productGetters,
   categoryGetters,
-  useWishlist
+  useWishlist,
+  useCart,
 } from '@vue-storefront/odoo';
 import { useUiHelpers } from '~/composables';
 
@@ -160,33 +212,47 @@ export default {
     SfScrollable,
     SfMenuItem,
     SfButton,
-    SfImage
+    SfImage,
   },
   props: {
     visible: {
       type: Boolean,
-      default: false
+      default: false,
     },
     result: {
-      type: Object
-    }
+      type: Object,
+    },
+    term: {
+      type: String,
+    },
+    searchLoading: {
+      type: Boolean,
+    },
   },
   watch: {
     $route() {
       this.$emit('close');
       this.$emit('removeSearchResults');
-    }
+    },
   },
   setup(props, { emit }) {
     const uiHelper = useUiHelpers();
     const isSearchOpen = ref(props.visible);
+    const term = ref(props.term);
+    const searchLoading = ref(props.searchLoading);
     const products = computed(() => props.result?.products);
     const categories = computed(() => props.result?.categories);
-    const { addItem: addItemToWishlist } = useWishlist();
+    const {
+      addItem: addItemToWishlist,
+      removeItem: removeItemFromWishList,
+      isInWishlist,
+    } = useWishlist();
+
+    const { addItem: addItemToCart, isInCart } = useCart();
 
     const goToProduct = (product) => {
       return `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-        product
+        product,
       )}`;
     };
     watch(
@@ -199,19 +265,25 @@ export default {
           document.body.classList.remove('no-scroll');
           emit('removeSearchResults');
         }
-      }
+      },
     );
     return {
       addItemToWishlist,
+      removeItemFromWishList,
+      isInWishlist,
       goToProduct,
       uiHelper,
       isSearchOpen,
       categoryGetters,
       productGetters,
       products,
-      categories
+      categories,
+      term,
+      searchLoading,
+      addItemToCart,
+      isInCart,
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -254,9 +326,6 @@ export default {
   }
 }
 .results {
-  &--desktop {
-    --scrollable-max-height: 35vh;
-  }
   &--mobile {
     display: flex;
     flex-wrap: wrap;
@@ -274,7 +343,7 @@ export default {
   background: var(--c-white);
   width: 100%;
   &__button {
-    width: calc(100% - 32px);
+    width: 100%;
   }
 }
 .results-listing {
@@ -288,6 +357,13 @@ export default {
     margin: var(--spacer-2xs) 0;
   }
 }
+.custom__text {
+  color: #0468db;
+  margin-top: 40px;
+}
+.custom__text:hover {
+  color: #5ece7b;
+}
 .before-results {
   box-sizing: border-box;
   padding: var(--spacer-base) var(--spacer-sm) var(--spacer-2xl);
@@ -295,6 +371,7 @@ export default {
   text-align: center;
   @include for-desktop {
     padding: 0;
+    height: 100vh;
   }
   &__picture {
     --image-width: 230px;

@@ -8,8 +8,7 @@
     </LazyHydrate>
 
     <div id="layout">
-      <nuxt :key="$route.fullPath"/>
-
+      <nuxt :key="$route.fullPath" />
 
       <MobileMenuSidebar />
       <LazyHydrate when-visible>
@@ -49,13 +48,13 @@ export default {
     CartSidebar,
     WishlistSidebar,
     LoginModal,
-    Notification
-  }
+    Notification,
+  },
 };
 </script>
 
 <style lang="scss">
-@import "~@storefront-ui/vue/styles";
+@import '~@storefront-ui/vue/styles';
 
 #layout {
   box-sizing: border-box;
@@ -67,6 +66,9 @@ export default {
 
 .no-scroll {
   overflow: hidden;
+  @include for-mobile {
+    overflow: hidden;
+  }
   height: 100vh;
 }
 
@@ -78,6 +80,7 @@ html {
   }
 }
 body {
+  overflow-y: auto !important;
   overflow-x: hidden;
   color: var(--c-text);
   font-size: var(--font-size--base);
