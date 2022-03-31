@@ -56,6 +56,11 @@
                   :regular-price="
                     $n(productGetters.getPrice(product).regular, 'currency')
                   "
+                  :special-price="
+                    productGetters.getPrice(product).special &&
+                    $n(productGetters.getPrice(product).special, 'currency')
+                  "
+                  :show-add-to-cart-button="true"
                   :imageWidth="216"
                   :imageHeight="288"
                   :nuxtImgConfig="{ fit: 'cover' }"
@@ -66,7 +71,13 @@
                   :alt="productGetters.getName(product)"
                   :title="productGetters.getName(product)"
                   :link="localePath(goToProduct(product))"
-                  @click:wishlist="addItemToWishlist({ product })"
+                  :isInWishlist="isInWishlist({ product })"
+                  @click:wishlist="
+                    isInWishlist({ product })
+                      ? removeItemFromWishList({ product: { product } })
+                      : addItemToWishlist({ product })
+                  "
+                  @click:add-to-cart="addItemToCart({ product, quantity: 1 })"
                   @click="$emit('close')"
                 />
               </div>
@@ -91,12 +102,23 @@
                 :regular-price="
                   $n(productGetters.getPrice(product).regular, 'currency')
                 "
+                :special-price="
+                  productGetters.getPrice(product).special &&
+                  $n(productGetters.getPrice(product).special, 'currency')
+                "
                 :score-rating="productGetters.getAverageRating(product)"
                 :reviews-count="7"
                 :image="$image(productGetters.getCoverImage(product))"
                 :alt="productGetters.getName(product)"
                 :title="productGetters.getName(product)"
                 :link="localePath(goToProduct(product))"
+                :show-add-to-cart-button="true"
+                :isInWishlist="isInWishlist({ product })"
+                @click:wishlist="
+                  isInWishlist({ product })
+                    ? removeItemFromWishList({ product: { product } })
+                    : addItemToWishlist({ product })
+                "
                 @click="$emit('close')"
               />
             </div>
@@ -172,6 +194,7 @@ import {
   productGetters,
   categoryGetters,
   useWishlist,
+  useCart,
 } from '@vue-storefront/odoo';
 import { useUiHelpers } from '~/composables';
 
@@ -215,7 +238,13 @@ export default {
     const searchLoading = ref(props.searchLoading);
     const products = computed(() => props.result?.products);
     const categories = computed(() => props.result?.categories);
-    const { addItem: addItemToWishlist } = useWishlist();
+    const {
+      addItem: addItemToWishlist,
+      removeItem: removeItemFromWishList,
+      isInWishlist,
+    } = useWishlist();
+
+    const { addItem: addItemToCart, isInCart } = useCart();
 
     const goToProduct = (product) => {
       return `/p/${productGetters.getId(product)}/${productGetters.getSlug(
@@ -236,6 +265,8 @@ export default {
     );
     return {
       addItemToWishlist,
+      removeItemFromWishList,
+      isInWishlist,
       goToProduct,
       uiHelper,
       isSearchOpen,
@@ -245,6 +276,8 @@ export default {
       categories,
       term,
       searchLoading,
+      addItemToCart,
+      isInCart,
     };
   },
 };
@@ -289,9 +322,6 @@ export default {
   }
 }
 .results {
-  &--desktop {
-    // --scrollable-max-height: 35vh;
-  }
   &--mobile {
     display: flex;
     flex-wrap: wrap;
