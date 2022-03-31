@@ -82,12 +82,14 @@
                 />
               </div>
               <div class="sf-button--text">
-                <SfButton
-                  class="sf-button--text custom__text"
-                  @click="$emit('close')"
-                >
-                  {{ $t('See all results') }}
-                </SfButton>
+                <nuxt-link :to="'/c/all-searh-result/' + term">
+                  <SfButton
+                    class="sf-button--text custom__text"
+                    @click="$emit('close')"
+                  >
+                    {{ $t('See all results') }}
+                  </SfButton>
+                </nuxt-link>
               </div>
             </div>
             <div class="results--mobile smartphone-only">
@@ -124,12 +126,14 @@
             </div>
           </SfMegaMenuColumn>
           <div class="action-buttons smartphone-only">
-            <SfButton
-              class="action-buttons__button color-secondary mb-4"
-              @click="$emit('close')"
-            >
-              {{ $t('See all results') }}
-            </SfButton>
+            <nuxt-link :to="'/c/all-searh-result/' + term">
+              <SfButton
+                class="action-buttons__button color-secondary mb-4"
+                @click="$emit('close')"
+              >
+                {{ $t('See all results') }}
+              </SfButton>
+            </nuxt-link>
             <SfButton
               class="action-buttons__button color-light"
               @click="$emit('close')"
