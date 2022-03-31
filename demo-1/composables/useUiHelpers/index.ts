@@ -13,8 +13,7 @@ const useUiHelpers = (): any => {
   const router = useRouter();
   const { params, query } = route.value;
 
-  const getFacetsFromURL = () : ParamsFromUrl => {
-
+  const getFacetsFromURL = (): ParamsFromUrl => {
     let filters: string[] = [];
     if (query) {
       Object.keys(query).forEach((filterKey) => {
@@ -34,7 +33,12 @@ const useUiHelpers = (): any => {
     query?.sort?.split(',') || [];
     const page = query?.page || 1;
     const categoryId = parseInt(params.slug_3) || parseInt(params.slug_2);
-
+    if (params.slug_1 === 'all-searh-result') {
+      return {
+        search: params.slug_2,
+        fetchCategory: true,
+      };
+    }
     return {
       search: '',
       sort: { [sort[0]]: sort[1] },
@@ -46,8 +50,8 @@ const useUiHelpers = (): any => {
       fetchCategory: true,
       filter: {
         categoryId,
-        attributeValueId: filters
-      }
+        attributeValueId: filters,
+      },
     };
   };
 
@@ -80,7 +84,7 @@ const useUiHelpers = (): any => {
         const item = {
           filterName: label,
           label: value,
-          id: value
+          id: value,
         };
         formatedFilters.push(item);
       });
@@ -151,7 +155,7 @@ const useUiHelpers = (): any => {
     isFacetPrice,
     isFacetCheckbox,
     facetsFromUrlToFilter,
-    getComponentProviderByName
+    getComponentProviderByName,
   };
 };
 
