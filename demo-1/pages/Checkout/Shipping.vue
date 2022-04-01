@@ -187,6 +187,8 @@ import {
   useUser,
   userShippingGetters,
   useShipping,
+  useCart,
+  cartGetters,
 } from '@vue-storefront/odoo';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
@@ -214,6 +216,9 @@ export default {
   },
   setup(props, { root, emit }) {
     const isFormSubmitted = ref(false);
+    const { cart } = useCart();
+    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
+    if (totalItems.value === 0) root.$router.push('/cart');
     const formRef = ref(false);
     const currentAddressId = ref('');
     const defaultShippingAddress = ref(false);
