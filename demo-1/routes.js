@@ -18,6 +18,11 @@ export function getRoutes(themeDir = __dirname) {
       component: path.resolve(themeDir, 'pages/Category.vue'),
     },
     {
+      name: 'compare',
+      path: '/compare',
+      component: path.resolve(themeDir, 'pages/Compare.vue'),
+    },
+    {
       name: 'cart',
       path: '/cart',
       component: path.resolve(themeDir, 'pages/Cart.vue'),
