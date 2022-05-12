@@ -79,7 +79,63 @@
             :link="localePath({ name: 'home' })"
             class="carousel__item__product"
             @click:wishlist="toggleWishlist(i)"
-          />
+          >
+            <template #wishlist-icon>
+              <div class="flex flex-col justify-end space-y-2">
+                <div class="self-end">
+                  <SfIcon
+                    @click="$emit('click:wishlist')"
+                    icon="heart"
+                    size="xs"
+                    color="black"
+                    viewBox="0 0 24 24"
+                    :coverage="1"
+                  />
+                </div>
+                <div class="self-end mr-1">
+                  <div class="cursor-pointer" title="Compare the products">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <mask
+                        id="mask0_7_2456"
+                        style="mask-type: alpha"
+                        maskUnits="userSpaceOnUse"
+                        x="0"
+                        y="0"
+                        width="16"
+                        height="16"
+                      >
+                        <rect width="16" height="16" fill="#C4C4C4" />
+                      </mask>
+                      <g mask="url(#mask0_7_2456)">
+                        <path
+                          d="M16 4.66663L1.33333 4.66663L1.33333 3.33329L16 3.33329L16 4.66663Z"
+                          fill="#1D1F22"
+                        />
+                        <path
+                          d="M4.41128 -1.0803e-06L5.3335 0.836151L1.84335 4L5.3335 7.16385L4.41128 8L0.000162756 3.99999L4.41128 -1.0803e-06Z"
+                          fill="#1D1F22"
+                        />
+                        <path
+                          d="M0 11.3334L14.6667 11.3334L14.6667 12.6667L-2.33127e-07 12.6667L0 11.3334Z"
+                          fill="#1D1F22"
+                        />
+                        <path
+                          d="M11.5887 16L10.6665 15.1638L14.1566 12L10.6665 8.83615L11.5887 8L15.9998 12L11.5887 16Z"
+                          fill="#1D1F22"
+                        />
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </SfProductCard>
         </SfCarouselItem>
       </SfCarousel>
     </LazyHydrate>
@@ -125,7 +181,8 @@ import {
   SfBannerGrid,
   SfHeading,
   SfArrow,
-  SfButton
+  SfButton,
+  SfIcon,
 } from '@storefront-ui/vue';
 import { ref, useContext } from '@nuxtjs/composition-api';
 import InstagramFeed from '~/components/InstagramFeed.vue';
@@ -152,7 +209,8 @@ export default {
     SfArrow,
     SfButton,
     NewsletterModal,
-    LazyHydrate
+    LazyHydrate,
+    SfIcon,
   },
   setup() {
     const { $config } = useContext();
@@ -166,64 +224,64 @@ export default {
         image: addBasePath('/homepage/productA.webp'),
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: true
+        isInWishlist: true,
       },
       {
         title: 'Cream Beach Bag 2',
         image: addBasePath('/homepage/productB.webp'),
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag 3',
         image: addBasePath('homepage/productC.webp'),
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag RR',
         image: addBasePath('/homepage/productA.webp'),
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag',
         image: addBasePath('/homepage/productB.webp'),
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag',
         image: addBasePath('/homepage/productC.webp'),
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag',
         image: addBasePath('/homepage/productA.webp'),
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
+        isInWishlist: false,
       },
       {
         title: 'Cream Beach Bag',
         image: addBasePath('/homepage/productB.webp'),
         price: { regular: '50.00 $' },
         rating: { max: 5, score: 4 },
-        isInWishlist: false
-      }
+        isInWishlist: false,
+      },
     ]);
     const heroes = [
       {
         title: 'Colorful summer dresses are already in store',
         subtitle: 'SUMMER COLLECTION 2019',
         background: '#eceff1',
-        image: addBasePath('/homepage/bannerH.webp')
+        image: addBasePath('/homepage/bannerH.webp'),
       },
       {
         title: 'Colorful summer dresses are already in store',
@@ -231,14 +289,14 @@ export default {
         background: '#efebe9',
         image: addBasePath('/homepage/bannerA.webp'),
         className:
-          'sf-hero-item--position-bg-top-left sf-hero-item--align-right'
+          'sf-hero-item--position-bg-top-left sf-hero-item--align-right',
       },
       {
         title: 'Colorful summer dresses are already in store',
         subtitle: 'SUMMER COLLECTION 2019',
         background: '#fce4ec',
-        image: addBasePath('/homepage/bannerB.webp')
-      }
+        image: addBasePath('/homepage/bannerB.webp'),
+      },
     ];
     const banners = [
       {
@@ -246,25 +304,25 @@ export default {
         subtitle: 'Dresses',
         title: 'Cocktail & Party',
         description:
-          'Find stunning women\'s cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.',
+          "Find stunning women's cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.",
         buttonText: 'Shop now',
         image: {
           mobile: addBasePath($config.theme.home.bannerA.image.mobile),
-          desktop: addBasePath($config.theme.home.bannerA.image.desktop)
+          desktop: addBasePath($config.theme.home.bannerA.image.desktop),
         },
         class: 'sf-banner--slim desktop-only',
-        link: $config.theme.home.bannerA.link
+        link: $config.theme.home.bannerA.link,
       },
       {
         slot: 'banner-B',
         subtitle: 'Dresses',
         title: 'Linen Dresses',
         description:
-          'Find stunning women\'s cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.',
+          "Find stunning women's cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses from all your favorite brands.",
         buttonText: 'Shop now',
         image: addBasePath($config.theme.home.bannerB.image),
         class: 'sf-banner--slim banner-central desktop-only',
-        link: $config.theme.home.bannerB.link
+        link: $config.theme.home.bannerB.link,
       },
       {
         slot: 'banner-C',
@@ -272,7 +330,7 @@ export default {
         title: 'The Office Life',
         image: addBasePath($config.theme.home.bannerC.image),
         class: 'sf-banner--slim banner__tshirt',
-        link: $config.theme.home.bannerC.link
+        link: $config.theme.home.bannerC.link,
       },
       {
         slot: 'banner-D',
@@ -280,8 +338,8 @@ export default {
         title: 'Eco Sandals',
         image: addBasePath($config.theme.home.bannerD.image),
         class: 'sf-banner--slim',
-        link: $config.theme.home.bannerD.link
-      }
+        link: $config.theme.home.bannerD.link,
+      },
     ];
 
     const onSubscribe = async (emailAddress) => {
@@ -290,13 +348,13 @@ export default {
       if (data.subscribed) {
         send({
           message: 'Subscribe successfull!',
-          type: 'success'
+          type: 'success',
         });
       }
       if (!data.subscribed) {
         send({
           message: 'Something wrong!',
-          type: 'danger'
+          type: 'danger',
         });
       }
       toggleNewsletterModal();
@@ -314,9 +372,9 @@ export default {
       banners,
       heroes,
       products,
-      loading
+      loading,
     };
-  }
+  },
 };
 </script>
 

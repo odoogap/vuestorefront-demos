@@ -27,7 +27,7 @@
             </div>
             <div
               class="cursor-pointer"
-              @click="compare"
+              @click="compare()"
               title="Compare the products"
             >
               <SfIcon
@@ -125,7 +125,7 @@
         >
           {{ $t('Start shopping') }}
         </SfButton>
-        <SfButton @click="compare" class="sf-button--full-width mt-3">
+        <SfButton @click="compare()" class="sf-button--full-width mt-3">
           {{ $t('compare products') }}
         </SfButton>
       </template>
@@ -152,7 +152,7 @@ import {
 } from '@vue-storefront/odoo';
 import { onSSR } from '@vue-storefront/core';
 import { useUiState } from '~/composables';
-
+import useAddToCompare from '../composables/useAddToCompare';
 export default {
   name: 'Wishlist',
   components: {
@@ -186,10 +186,13 @@ export default {
       )}/${productGetters.getSlug(wishlistItem.product)}`;
     };
 
-    function compare() {
+    const { addToCompare, getAddToCompareProductIds } = useAddToCompare();
+    const compare = () => {
+      let ids = products.value.map((item) => item.id);
+      addToCompare(ids);
       router.push('/compare');
       toggleWishlistSidebar();
-    }
+    };
 
     return {
       getLocalPathFromWishListItem,

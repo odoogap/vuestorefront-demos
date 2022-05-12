@@ -92,6 +92,7 @@ module.exports = {
         'sf-xl': 'var(--spacer-xl)', // 40px
         'sf-2xl': 'var(--spacer-2xl)', // 80px
         'sf-3xl': 'var(--spacer-3xl)', // 160px
+        '38': '10rem'
       },
       fontFamily: {
         'sf-primary': 'var(--font-family--primary)', // "Roboto", serif
