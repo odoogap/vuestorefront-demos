@@ -21,9 +21,32 @@
       </template>
       <transition name="fade" mode="out-in">
         <div v-if="totalItems" class="my-wishlist" key="my-wishlist">
-          <div class="my-wishlist__total-items">
-            Total items: <strong>{{ totalItems }}</strong>
+          <div class="flex flex-row justify-between items-center">
+            <div class="my-wishlist__total-items">
+              Total items: <strong>{{ totalItems }}</strong>
+            </div>
+            <div
+              class="cursor-pointer"
+              @click="compare()"
+              title="Compare the products"
+            >
+              <SfIcon
+                icon="arrow_left"
+                size="xxs"
+                color="gray-primary"
+                viewBox="0 0 24 24"
+                :coverage="0.4"
+              />
+              <SfIcon
+                icon="arrow_right"
+                size="xxs"
+                color="gray-primary"
+                viewBox="0 0 24 24"
+                :coverage="1"
+              />
+            </div>
           </div>
+
           <div class="collected-product-list">
             <transition-group name="fade" tag="div">
               <SfCollectedProduct
@@ -100,7 +123,10 @@
           @click="toggleWishlistSidebar"
           class="sf-button--full-width color-secondary"
         >
-          {{ $t("Start shopping") }}
+          {{ $t('Start shopping') }}
+        </SfButton>
+        <SfButton @click="compare()" class="sf-button--full-width mt-3">
+          {{ $t('compare products') }}
         </SfButton>
       </template>
     </SfSidebar>
@@ -116,19 +142,19 @@ import {
   SfPrice,
   SfCollectedProduct,
   SfImage,
-} from "@storefront-ui/vue";
-import { computed } from "@nuxtjs/composition-api";
+} from '@storefront-ui/vue';
+import { computed, useRouter } from '@nuxtjs/composition-api';
 import {
   useWishlist,
   useUser,
   wishlistGetters,
   productGetters,
-} from "@vue-storefront/odoo";
-import { onSSR } from "@vue-storefront/core";
-import { useUiState } from "~/composables";
-
+} from '@vue-storefront/odoo';
+import { onSSR } from '@vue-storefront/core';
+import { useUiState } from '~/composables';
+import useAddToCompare from '../composables/useAddToCompare';
 export default {
-  name: "Wishlist",
+  name: 'Wishlist',
   components: {
     SfSidebar,
     SfButton,
@@ -140,13 +166,14 @@ export default {
     SfImage,
   },
   setup() {
+    const router = useRouter();
     const { isWishlistSidebarOpen, toggleWishlistSidebar } = useUiState();
     const { wishlist, removeItem } = useWishlist();
     const { isAuthenticated } = useUser();
     const products = computed(() => wishlistGetters.getItems(wishlist.value));
     const totals = computed(() => wishlistGetters.getTotals(wishlist.value));
     const totalItems = computed(() =>
-      wishlistGetters.getTotalItems(wishlist.value)
+      wishlistGetters.getTotalItems(wishlist.value),
     );
 
     onSSR(async () => {
@@ -155,8 +182,16 @@ export default {
 
     const getLocalPathFromWishListItem = (wishlistItem) => {
       return `/p/${productGetters.getId(
-        wishlistItem.product
+        wishlistItem.product,
       )}/${productGetters.getSlug(wishlistItem.product)}`;
+    };
+
+    const { addToCompare, getAddToCompareProductIds } = useAddToCompare();
+    const compare = () => {
+      let ids = products.value.map((item) => item.id);
+      addToCompare(ids);
+      router.push('/compare');
+      toggleWishlistSidebar();
     };
 
     return {
@@ -170,6 +205,7 @@ export default {
       totalItems,
       wishlistGetters,
       productGetters,
+      compare,
     };
   },
 };

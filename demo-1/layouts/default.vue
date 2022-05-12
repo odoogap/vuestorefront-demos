@@ -7,7 +7,7 @@
       <AppHeader />
     </LazyHydrate>
 
-    <div id="layout">
+    <div id="layout" class="relative">
       <nuxt :key="$route.fullPath" />
 
       <MobileMenuSidebar />
@@ -18,6 +18,7 @@
       <WishlistSidebar />
       <LoginModal />
       <Notification />
+      <TheCompareModal v-if="productCompareBar" />
     </div>
     <LazyHydrate when-visible>
       <AppFooter />
@@ -35,8 +36,15 @@ import WishlistSidebar from '~/components/WishlistSidebar.vue';
 import LoginModal from '~/components/LoginModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import Notification from '~/components/Notification';
+import TheCompareModal from '~/components/TheCompareModal.vue';
+import {
+  ref,
+  defineComponent,
+  useRoute,
+  watch,
+} from '@nuxtjs/composition-api';
 
-export default {
+export default defineComponent({
   name: 'DefaultLayout',
 
   components: {
@@ -49,8 +57,30 @@ export default {
     WishlistSidebar,
     LoginModal,
     Notification,
+    TheCompareModal,
   },
-};
+  
+  setup () {
+    const route = useRoute();
+    const productCompareBar = ref(true);
+
+    const hideVisibility = () => {
+      if (
+        route.value.path === '/compare' ||
+        route.value.path === '/checkout/shipping'
+      ) {
+        productCompareBar.value = false;
+      } else {
+        productCompareBar.value = true;
+      }
+    };
+    hideVisibility()
+
+    watch(() => route.value.path, hideVisibility);
+
+    return { productCompareBar };
+  },
+});
 </script>
 
 <style lang="scss">
@@ -58,6 +88,7 @@ export default {
 
 #layout {
   box-sizing: border-box;
+
   @include for-desktop {
     max-width: 1240px;
     margin: auto;
@@ -66,19 +97,23 @@ export default {
 
 .no-scroll {
   overflow: hidden;
+
   @include for-mobile {
     overflow: hidden;
   }
+
   height: 100vh;
 }
 
 // Reset CSS
 html {
   width: auto;
+
   @include for-mobile {
     overflow-x: hidden;
   }
 }
+
 body {
   overflow-y: auto !important;
   overflow-x: hidden;
@@ -88,31 +123,37 @@ body {
   margin: 0;
   padding: 0;
 }
+
 a {
   text-decoration: none;
   color: var(--c-link);
+
   &:hover {
     color: var(--c-link-hover);
   }
 }
+
 h1 {
   font-family: var(--font-family--secondary);
   font-size: var(--h1-font-size);
   line-height: 1.6;
   margin: 0;
 }
+
 h2 {
   font-family: var(--font-family--secondary);
   font-size: var(--h2-font-size);
   line-height: 1.6;
   margin: 0;
 }
+
 h3 {
   font-family: var(--font-family--secondary);
   font-size: var(--h3-font-size);
   line-height: 1.6;
   margin: 0;
 }
+
 h4 {
   font-family: var(--font-family--secondary);
   font-size: var(--h4-font-size);

@@ -2174,10 +2174,10 @@
     lodash "^4.17.15"
     nuxt-purgecss "^1.0.0"
 
-"@vue-storefront/odoo-api@1.4.0-rc.4":
-  version "1.4.0-rc.4"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo-api/-/odoo-api-1.4.0-rc.4.tgz#69795469718f778553f91d0decd205743401c210"
-  integrity sha512-wvDEU4YrcGUqyJ8/znuN/7YHR9dskO4K3J/bvW46kGrm6M7B4UCJrJFWFd+mR+jt/au6ajXiG5+kWymWDgHfDQ==
+"@vue-storefront/odoo-api@1.4.0-rc.5":
+  version "1.4.0-rc.5"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo-api/-/odoo-api-1.4.0-rc.5.tgz#ad03ed555107d3436245f9f93ce6bb2513ed0d8b"
+  integrity sha512-/dELV/MsPqL9rDKB0Z7Eb8DdJEg2slx9Qe1idnud8nXSH9gqudpTDMX/+aCDLe+JA17zEeCUFvwD4cY/xHK+qA==
   dependencies:
     "@vue-storefront/core" "2.5.4"
     apollo-cache-inmemory "^1.6.6"
@@ -2189,23 +2189,14 @@
     graphql-tag "^2.12.4"
     isomorphic-fetch "^3.0.0"
 
-"@vue-storefront/odoo@1.4.0-rc.4":
-  version "1.4.0-rc.4"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo/-/odoo-1.4.0-rc.4.tgz#2a74c6cb5a2b458338bb342bbd8552b403e02352"
-  integrity sha512-GvV4eXM0DI6wJCIGCB8Bmkvcc9HoiQYJSuonnb/mrRJDKRgyQJzhJmNI1eiwXt5z5OVfqbNW5+EnxxY0XobmUg==
+"@vue-storefront/odoo@1.4.0-rc.5":
+  version "1.4.0-rc.5"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo/-/odoo-1.4.0-rc.5.tgz#11437589ac037093c507bc1d336417346c81ba67"
+  integrity sha512-ZX1JeYxGwS0a8JosV21Vo7tTt/ooFBBz5VFdBvw+8YDFxtA8sh7H3gMASQBO344LVUYhgsdhNZV7EdfCL5btvw==
   dependencies:
     "@nuxtjs/composition-api" "0.31.0"
     "@vue-storefront/core" "2.5.4"
-    "@vue-storefront/odoo-api" "1.4.0-rc.4"
-
-"@vue-storefront/odoo@^1.4.0-rc.3":
-  version "1.4.0-rc.3"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/odoo/-/odoo-1.4.0-rc.3.tgz#bef35dbb8c5b3e01e86c93270cd3f200ad6642d6"
-  integrity sha512-eLbkn6MKTRF/4/oEvWNUEj/D6XJlN9jWpGmEqUE+EYm5VN7g3drcmBmXU4raKCGplo6+X2XQ1+ATtgAASA3aUw==
-  dependencies:
-    "@nuxtjs/composition-api" "0.31.0"
-    "@vue-storefront/core" "2.5.4"
-    "@vue-storefront/odoo-api" "1.4.0-rc.3"
+    "@vue-storefront/odoo-api" "1.4.0-rc.5"
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.2.1":
   version "1.2.1"
