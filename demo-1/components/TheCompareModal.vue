@@ -1,170 +1,84 @@
 <template>
-  <div class="
-          h-40
-          fixed
-          bottom-0
-          flex
-          items-center
-          bg-white
-          px-2
-          border border-gray-300
-          z-50
-        ">
-    <div class="flex justify-between w-full">
-      <div class="products flex items-start space-x-2">
-        <div class="flex flex-row items-start space-x-3 hover:shadow-md">
-          <div class="
-                  product-img
-                  self-stretch
-                  bg-gray-200
-                  px-1
-                  flex
-                  items-center
-                ">
+  <div class="fixed left-0 right-0 fixed-bar bottom-0 z-50">
+    <div
+      id="layout"
+      class="
+        flex flex-col
+        justify-between
+        flex-grow
+        p-3
+        mx-auto
+        bg-white
+        md:flex-row md
+        card-container
+      "
+    >
+      <div class="flex flex-wrap flex-grow">
+        <div v-for="x in 4" :key="x" class="flex items-start mx-2 items">
+          <picture class="p-2 bg-gray-200">
             <img class="w-14" src="/orange_bottle.png" />
+          </picture>
+          <div class="p-2 ml-4 mr-3 text-sm">
+            <p class="font-medium">
+              Highlands Orange <br />
+              Juice Cordial 3L
+            </p>
+            <p class="mt-2 text-xl font-bold">KES 510.00</p>
           </div>
-          <div class="product-details w-36">
-            <h1 class="text-xl font-semibold my-2">
-              Highlands Orange Juice Cordial 3L
-            </h1>
-            <h1 class="text-2xl font-bold font-sans">KES 510.00</h1>
-          </div>
-          <button class="
-                  close-btn
-                  bg-red-600
-                  rounded-full
-                  h-8
-                  w-8
-                  p-1
-                  text-center text-white
-                ">
-            x
-          </button>
-        </div>
-        <div class="flex flex-row items-start space-x-3 hover:shadow-md">
-          <div class="
-                  product-img
-                  self-stretch
-                  bg-gray-200
-                  px-1
-                  flex
-                  items-center
-                ">
-            <img class="w-14" src="/orange_bottle.png" />
-          </div>
-          <div class="product-details w-36">
-            <h1 class="text-xl font-semibold my-2">
-              Highlands Orange Juice Cordial 3L
-            </h1>
-            <h1 class="text-2xl font-bold font-sans">KES 510.00</h1>
-          </div>
-          <button class="
-                  close-btn
-                  bg-red-600
-                  rounded-full
-                  h-8
-                  w-8
-                  p-1
-                  text-center text-white
-                ">
-            x
-          </button>
-        </div>
-        <div class="flex flex-row items-start space-x-3 hover:shadow-md">
-          <div class="
-                  product-img
-                  self-stretch
-                  bg-gray-200
-                  px-1
-                  flex
-                  items-center
-                ">
-            <img class="w-14" src="/orange_bottle.png" />
-          </div>
-          <div class="product-details w-36">
-            <h1 class="text-xl font-semibold my-2">
-              Highlands Orange Juice Cordial 3L
-            </h1>
-            <h1 class="text-2xl font-bold font-sans">KES 510.00</h1>
-          </div>
-          <button class="
-                  close-btn
-                  bg-red-600
-                  rounded-full
-                  h-8
-                  w-8
-                  p-1
-                  text-center text-white
-                ">
-            x
-          </button>
-        </div>
-        <div class="flex flex-row items-start space-x-3 hover:shadow-md">
-          <div class="
-                  product-img
-                  self-stretch
-                  bg-gray-200
-                  px-1
-                  flex
-                  items-center
-                ">
-            <img class="w-14" src="/orange_bottle.png" />
-          </div>
-          <div class="product-details w-36">
-            <h1 class="text-xl font-semibold my-2">
-              Highlands Orange Juice Cordial 3L
-            </h1>
-            <h1 class="text-2xl font-bold font-sans">KES 510.00</h1>
-          </div>
-          <button class="
-                  close-btn
-                  bg-red-600
-                  rounded-full
-                  h-8
-                  w-8
-                  p-1
-                  text-center text-white
-                ">
-            x
+          <button
+            class="
+              px-2
+              py-1.5
+              text-xs
+              leading-3
+              text-white
+              bg-red-600
+              rounded-full
+            "
+          >
+            &times;
           </button>
         </div>
       </div>
-      <div class="btn-group self-center">
-        <div class="w-36 flex flex-col items-end space-y-3">
-          <nuxt-link to="/compare" class="
-                  w-32
-                  py-2
-                  text-xl
-                  uppercase
-                  bg-yellow-400
-                  border border-yellow-400
-                  rounded-md
-                  text-center
-                ">
-            compare
-          </nuxt-link>
-          <button class="
-                  w-32
-                  py-2
-                  text-xl
-                  uppercase
-                  border border-black
-                  rounded-md
-                ">
-            done
-          </button>
-        </div>
+      <div class="flex flex-col justify-center gap-3">
+        <nuxt-link
+          to="/compare"
+          class="px-4 py-2 font-medium uppercase bg-yellow-400 rounded-md"
+        >
+          compare
+        </nuxt-link>
+        <button
+          class="
+            px-4
+            py-1.5
+            border-black
+            font-medium
+            uppercase
+            border-2
+            rounded-md
+          "
+        >
+          Done
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
-
+import { defineComponent, onMounted } from '@vue/composition-api';
+import { getProductsByIds } from '../queries/product';
 export default defineComponent({
   name: 'TheCompareModal',
-
-
-})
+  setup() {
+    // const res = getProductsByIds({ ids: [78, 79] });
+    // console.log({ res });
+  },
+});
 </script>
+
+<style scoped>
+.font-16 {
+  font-size: 16px !important;
+}
+</style>
