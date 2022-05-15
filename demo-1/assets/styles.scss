@@ -1,3 +1,15 @@
 .sf-sidebar__aside {
   z-index: var(--sidebar-z-index, 2);
 }
+
+.product-compare-btn {
+  top: 70px !important;
+  right: 42px !important;
+}
+
+@media screen and (max-width: 768px) {
+  .product-compare-btn {
+    top: 46px !important;
+    right: 20px !important;
+  }
+}

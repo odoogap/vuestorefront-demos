@@ -1,40 +1,44 @@
-
-
 const useAddToCompare = () => {
-    const addToCompare = (productIds) => {
-        const existingIds = localStorage.getItem('compareProductIds');
-        if (existingIds) {
-            productIds = productIds.concat(existingIds.split(',').map(Number));
+    const getComparableProducts = () => {
+        let items = [];
+        if (process.browser) {
+            const existingProduts = localStorage.getItem('comparableProducts');
+
+            if (existingProduts) {
+                const array = JSON.parse(existingProduts)
+                if (Array.isArray(array)) {
+                    items = array
+                }
+            }
         }
-        productIds = [...new Set(productIds)];
 
-        localStorage.setItem('compareProductIds', productIds);
+        return items;
+    }
 
-        return {
-            success: true,
-            message: 'Successfylly added'
+    const addToCompare = (productId) => {
+        if (process.browser) {
+            const items = getComparableProducts();
+
+            if (!items.includes(productId)) {
+                items.push(productId)
+            }
+
+            localStorage.setItem('comparableProducts', JSON.stringify(items));
         }
     }
 
-    const getCompareProductIds = () => {
-        const existingIds = localStorage.getItem('compareProductIds');
-        return existingIds.split(',').map(Number)
-    }
+    const removeFromCompare = (productId) => {
+        const array = getComparableProducts().filter(_ => _ !== productId)
 
-    const removeCompareProduct = (productId) => {
-        const ids = getCompareProductIds().filter(item => item !== Number(productId))
-        addToCompare(ids)
-        return {
-            success: true,
-            message: 'Successfylly removed'
+        if (process.browser) {
+            localStorage.setItem('comparableProducts', JSON.stringify(array));
         }
     }
-
 
     return {
         addToCompare,
-        getCompareProductIds,
-        removeCompareProduct
+        getComparableProducts,
+        removeFromCompare
     }
 }
 

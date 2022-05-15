@@ -64,78 +64,74 @@
           v-for="(product, i) in products"
           :key="i"
         >
-          <SfProductCard
-            :title="product.title"
-            :image="product.image"
-            :imageWidth="216"
-            :imageHeight="288"
-            :nuxtImgConfig="{ fit: 'cover' }"
-            image-tag="nuxt-img"
-            :regular-price="product.price.regular"
-            :max-rating="product.rating.max"
-            :score-rating="product.rating.score"
-            :show-add-to-cart-button="true"
-            :is-on-wishlist="product.isInWishlist"
-            :link="localePath({ name: 'home' })"
-            class="carousel__item__product"
-            @click:wishlist="toggleWishlist(i)"
-          >
-            <template #wishlist-icon>
-              <div class="flex flex-col justify-end space-y-2">
-                <div class="self-end">
-                  <SfIcon
-                    @click="$emit('click:wishlist')"
-                    icon="heart"
-                    size="xs"
-                    color="black"
-                    viewBox="0 0 24 24"
-                    :coverage="1"
+          <section class="group relative flex justify-center">
+            <SfProductCard
+              :title="product.title"
+              :image="product.image"
+              :imageWidth="216"
+              :imageHeight="288"
+              :nuxtImgConfig="{ fit: 'cover' }"
+              image-tag="nuxt-img"
+              :regular-price="product.price.regular"
+              :max-rating="product.rating.max"
+              :score-rating="product.rating.score"
+              :show-add-to-cart-button="true"
+              :is-on-wishlist="product.isInWishlist"
+              :link="localePath({ name: 'home' })"
+              class="carousel__item__product"
+              @click:wishlist="toggleWishlist(i)"
+            />
+            <div
+              class="
+                cursor-pointer
+                lg:hidden
+                group-hover:block
+                absolute
+                product-compare-btn
+                z-50
+              "
+              title="Compare the products"
+              @click="addToCompareProduct(product)"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <mask
+                  id="mask0_7_2456"
+                  style="mask-type: alpha"
+                  maskUnits="userSpaceOnUse"
+                  x="0"
+                  y="0"
+                  width="16"
+                  height="16"
+                >
+                  <rect width="16" height="16" fill="#C4C4C4" />
+                </mask>
+                <g mask="url(#mask0_7_2456)">
+                  <path
+                    d="M16 4.66663L1.33333 4.66663L1.33333 3.33329L16 3.33329L16 4.66663Z"
+                    fill="#1D1F22"
                   />
-                </div>
-                <div class="self-end mr-1">
-                  <div class="cursor-pointer" title="Compare the products">
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <mask
-                        id="mask0_7_2456"
-                        style="mask-type: alpha"
-                        maskUnits="userSpaceOnUse"
-                        x="0"
-                        y="0"
-                        width="16"
-                        height="16"
-                      >
-                        <rect width="16" height="16" fill="#C4C4C4" />
-                      </mask>
-                      <g mask="url(#mask0_7_2456)">
-                        <path
-                          d="M16 4.66663L1.33333 4.66663L1.33333 3.33329L16 3.33329L16 4.66663Z"
-                          fill="#1D1F22"
-                        />
-                        <path
-                          d="M4.41128 -1.0803e-06L5.3335 0.836151L1.84335 4L5.3335 7.16385L4.41128 8L0.000162756 3.99999L4.41128 -1.0803e-06Z"
-                          fill="#1D1F22"
-                        />
-                        <path
-                          d="M0 11.3334L14.6667 11.3334L14.6667 12.6667L-2.33127e-07 12.6667L0 11.3334Z"
-                          fill="#1D1F22"
-                        />
-                        <path
-                          d="M11.5887 16L10.6665 15.1638L14.1566 12L10.6665 8.83615L11.5887 8L15.9998 12L11.5887 16Z"
-                          fill="#1D1F22"
-                        />
-                      </g>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </template>
-          </SfProductCard>
+                  <path
+                    d="M4.41128 -1.0803e-06L5.3335 0.836151L1.84335 4L5.3335 7.16385L4.41128 8L0.000162756 3.99999L4.41128 -1.0803e-06Z"
+                    fill="#1D1F22"
+                  />
+                  <path
+                    d="M0 11.3334L14.6667 11.3334L14.6667 12.6667L-2.33127e-07 12.6667L0 11.3334Z"
+                    fill="#1D1F22"
+                  />
+                  <path
+                    d="M11.5887 16L10.6665 15.1638L14.1566 12L10.6665 8.83615L11.5887 8L15.9998 12L11.5887 16Z"
+                    fill="#1D1F22"
+                  />
+                </g>
+              </svg>
+            </div>
+          </section>
         </SfCarouselItem>
       </SfCarousel>
     </LazyHydrate>
@@ -184,7 +180,7 @@ import {
   SfButton,
   SfIcon,
 } from '@storefront-ui/vue';
-import { ref, useContext } from '@nuxtjs/composition-api';
+import { ref, useContext, onMounted } from '@nuxtjs/composition-api';
 import InstagramFeed from '~/components/InstagramFeed.vue';
 import NewsletterModal from '~/components/NewsletterModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
@@ -192,6 +188,7 @@ import { useUiState } from '../composables';
 import { useNewsLetter } from '@vue-storefront/odoo';
 import { addBasePath } from '@vue-storefront/core';
 import { useUiNotification } from '~/composables';
+import useAddToCompare from '~/composables/useAddToCompare';
 
 export default {
   name: 'Home',
@@ -220,6 +217,7 @@ export default {
 
     const products = ref([
       {
+        id: 1,
         title: 'Cream Beach Bag',
         image: addBasePath('/homepage/productA.webp'),
         price: { regular: '50.00 $' },
@@ -227,6 +225,7 @@ export default {
         isInWishlist: true,
       },
       {
+        id: 2,
         title: 'Cream Beach Bag 2',
         image: addBasePath('/homepage/productB.webp'),
         price: { regular: '50.00 $' },
@@ -234,6 +233,7 @@ export default {
         isInWishlist: false,
       },
       {
+        id: 3,
         title: 'Cream Beach Bag 3',
         image: addBasePath('homepage/productC.webp'),
         price: { regular: '50.00 $' },
@@ -241,6 +241,7 @@ export default {
         isInWishlist: false,
       },
       {
+        id: 4,
         title: 'Cream Beach Bag RR',
         image: addBasePath('/homepage/productA.webp'),
         price: { regular: '50.00 $' },
@@ -248,6 +249,7 @@ export default {
         isInWishlist: false,
       },
       {
+        id: 5,
         title: 'Cream Beach Bag',
         image: addBasePath('/homepage/productB.webp'),
         price: { regular: '50.00 $' },
@@ -255,6 +257,7 @@ export default {
         isInWishlist: false,
       },
       {
+        id: 6,
         title: 'Cream Beach Bag',
         image: addBasePath('/homepage/productC.webp'),
         price: { regular: '50.00 $' },
@@ -262,6 +265,7 @@ export default {
         isInWishlist: false,
       },
       {
+        id: 7,
         title: 'Cream Beach Bag',
         image: addBasePath('/homepage/productA.webp'),
         price: { regular: '50.00 $' },
@@ -269,6 +273,7 @@ export default {
         isInWishlist: false,
       },
       {
+        id: 8,
         title: 'Cream Beach Bag',
         image: addBasePath('/homepage/productB.webp'),
         price: { regular: '50.00 $' },
@@ -364,6 +369,23 @@ export default {
       products.value[index].isInWishlist = !products.value[index].isInWishlist;
     };
 
+    const { addToCompare } = useAddToCompare();
+    const addToCompareProduct = (product) => {
+      addToCompare([product.id]);
+    };
+
+    // onMounted(() => {
+    //   const el = document.getElementsByClassName(
+    //     'sf-product-card__wishlist-icon',
+    //   );
+    //   // console.log(el);
+    //   el.forEach(element => {
+
+    //   })
+    //   var rect = el[0].getBoundingClientRect();
+    //   console.log(rect.top, rect.right);
+    // });
+
     return {
       toggleWishlist,
       toggleNewsletterModal,
@@ -373,6 +395,7 @@ export default {
       heroes,
       products,
       loading,
+      addToCompareProduct,
     };
   },
 };
@@ -483,6 +506,31 @@ export default {
     --arrow-icon-transform: rotate(180deg);
     -webkit-transform-origin: center;
     transform-origin: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .product-compare-btn {
+    top: 46px !important;
+    right: 120px !important;
+  }
+}
+@media screen and (max-width: 425px) {
+  .product-compare-btn {
+    top: 46px !important;
+    right: 230px !important;
+  }
+}
+@media screen and (max-width: 375px) {
+  .product-compare-btn {
+    top: 46px !important;
+    right: 193px !important;
+  }
+}
+@media screen and (max-width: 320px) {
+  .product-compare-btn {
+    top: 46px !important;
+    right: 169px !important;
   }
 }
 </style>

@@ -18,7 +18,7 @@
       <WishlistSidebar />
       <LoginModal />
       <Notification />
-      <TheCompareModal v-if="productCompareBar" />
+      <TheCompareModal />
     </div>
     <LazyHydrate when-visible>
       <AppFooter />
@@ -36,15 +36,8 @@ import WishlistSidebar from '~/components/WishlistSidebar.vue';
 import LoginModal from '~/components/LoginModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
 import Notification from '~/components/Notification';
-import TheCompareModal from '~/components/TheCompareModal.vue';
-import {
-  ref,
-  defineComponent,
-  useRoute,
-  watch,
-} from '@nuxtjs/composition-api';
 
-export default defineComponent({
+export default {
   name: 'DefaultLayout',
 
   components: {
@@ -57,30 +50,8 @@ export default defineComponent({
     WishlistSidebar,
     LoginModal,
     Notification,
-    TheCompareModal,
   },
-  
-  setup () {
-    const route = useRoute();
-    const productCompareBar = ref(true);
-
-    const hideVisibility = () => {
-      if (
-        route.value.path === '/compare' ||
-        route.value.path === '/checkout/shipping'
-      ) {
-        productCompareBar.value = false;
-      } else {
-        productCompareBar.value = true;
-      }
-    };
-    hideVisibility()
-
-    watch(() => route.value.path, hideVisibility);
-
-    return { productCompareBar };
-  },
-});
+};
 </script>
 
 <style lang="scss">
