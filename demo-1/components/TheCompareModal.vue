@@ -13,6 +13,7 @@
         card-container
       "
     >
+      {{ products }}
       <div class="flex flex-wrap flex-grow">
         <div v-for="x in 4" :key="x" class="flex items-start mx-2 items">
           <picture class="p-2 bg-gray-200">
@@ -68,11 +69,24 @@
 <script lang="ts">
 import { defineComponent, onMounted } from '@vue/composition-api';
 import { getProductsByIds } from '../queries/product';
+
+import { useProduct } from '@vue-storefront/odoo';
+import { onSSR } from '@vue-storefront/core';
+
 export default defineComponent({
   name: 'TheCompareModal',
   setup() {
-    // const res = getProductsByIds({ ids: [78, 79] });
-    // console.log({ res });
+    const { products, search } = useProduct('products');
+
+    onSSR(async () => {
+      await search({
+        customQuery: { getProductsByIds: `${getProductsByIds({ ids: [78] })}` },
+      });
+    });
+
+    return {
+      products,
+    };
   },
 });
 </script>

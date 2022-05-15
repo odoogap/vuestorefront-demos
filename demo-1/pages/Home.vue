@@ -180,7 +180,7 @@ import {
   SfButton,
   SfIcon,
 } from '@storefront-ui/vue';
-import { ref, useContext } from '@nuxtjs/composition-api';
+import { ref, useContext, onMounted } from '@nuxtjs/composition-api';
 import InstagramFeed from '~/components/InstagramFeed.vue';
 import NewsletterModal from '~/components/NewsletterModal.vue';
 import LazyHydrate from 'vue-lazy-hydration';
@@ -373,6 +373,18 @@ export default {
     const addToCompareProduct = (product) => {
       addToCompare([product.id]);
     };
+
+    // onMounted(() => {
+    //   const el = document.getElementsByClassName(
+    //     'sf-product-card__wishlist-icon',
+    //   );
+    //   // console.log(el);
+    //   el.forEach(element => {
+
+    //   })
+    //   var rect = el[0].getBoundingClientRect();
+    //   console.log(rect.top, rect.right);
+    // });
 
     return {
       toggleWishlist,
