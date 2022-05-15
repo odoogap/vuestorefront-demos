@@ -60,100 +60,48 @@
             tag="div"
             class="products__grid"
           >
-            <div
-              class="group relative"
+            <SfProductCard 
               v-for="(product, i) in products"
               :key="product.id"
+              data-cy="category-product-card"
+              :title="productGetters.getName(product)"
+              :style="{ '--index': i }"
+              :imageWidth="216"
+              :imageHeight="288"
+              :image="$image(productGetters.getCoverImage(product))"
+              :nuxtImgConfig="{ fit: 'cover' }"
+              image-tag="nuxt-img"
+              :regular-price="
+                $n(productGetters.getPrice(product).regular, 'currency')
+              "
+              :special-price="
+                productGetters.getPrice(product).special &&
+                $n(productGetters.getPrice(product).special, 'currency')
+              "
+              :max-rating="5"
+              :score-rating="productGetters.getAverageRating(product)"
+              :show-add-to-cart-button="true"
+              :isInWishlist="isInWishlist({ product })"
+              :isAddedToCart="isInCart({ product })"
+              :link="
+                localePath(
+                  `/p/${productGetters.getId(product)}/${productGetters.getSlug(
+                    product,
+                  )}`,
+                )
+              "
+              class="products__product-card"
+              @click:wishlist="
+                isInWishlist({ product })
+                  ? removeItemFromWishList({ product: { product } })
+                  : addItemToWishlist({ product })
+              "
+              @click:add-to-cart="addItemToCart({ product, quantity: 1 })"
             >
-              <SfProductCard
-                data-cy="category-product-card"
-                :style="{ '--index': i }"
-                :imageWidth="216"
-                :imageHeight="288"
-                :title="productGetters.getName(product)"
-                :image="$image(productGetters.getCoverImage(product))"
-                :nuxtImgConfig="{ fit: 'cover' }"
-                image-tag="nuxt-img"
-                :regular-price="
-                  $n(productGetters.getPrice(product).regular, 'currency')
-                "
-                :special-price="
-                  productGetters.getPrice(product).special &&
-                  $n(productGetters.getPrice(product).special, 'currency')
-                "
-                :max-rating="5"
-                :score-rating="productGetters.getAverageRating(product)"
-                :show-add-to-cart-button="true"
-                :isInWishlist="isInWishlist({ product })"
-                :isAddedToCart="isInCart({ product })"
-                :link="
-                  localePath(
-                    `/p/${productGetters.getId(
-                      product,
-                    )}/${productGetters.getSlug(product)}`,
-                  )
-                "
-                class="products__product-card"
-                @click:wishlist="
-                  isInWishlist({ product })
-                    ? removeItemFromWishList({ product: { product } })
-                    : addItemToWishlist({ product })
-                "
-                @click:add-to-cart="addItemToCart({ product, quantity: 1 })"
-                @click:compare="addToCompareProduct(product)"
-              ></SfProductCard>
-              <div
-                class="
-                  cursor-pointer
-                  lg:hidden
-                  group-hover:block
-                  absolute
-                  product-compare-btn
-                  right-10
-                  z-50
-                "
-                title="Compare the products"
-                @click="addToCompareProduct(product)"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <mask
-                    id="mask0_7_2456"
-                    style="mask-type: alpha"
-                    maskUnits="userSpaceOnUse"
-                    x="0"
-                    y="0"
-                    width="16"
-                    height="16"
-                  >
-                    <rect width="16" height="16" fill="#C4C4C4" />
-                  </mask>
-                  <g mask="url(#mask0_7_2456)">
-                    <path
-                      d="M16 4.66663L1.33333 4.66663L1.33333 3.33329L16 3.33329L16 4.66663Z"
-                      fill="#1D1F22"
-                    />
-                    <path
-                      d="M4.41128 -1.0803e-06L5.3335 0.836151L1.84335 4L5.3335 7.16385L4.41128 8L0.000162756 3.99999L4.41128 -1.0803e-06Z"
-                      fill="#1D1F22"
-                    />
-                    <path
-                      d="M0 11.3334L14.6667 11.3334L14.6667 12.6667L-2.33127e-07 12.6667L0 11.3334Z"
-                      fill="#1D1F22"
-                    />
-                    <path
-                      d="M11.5887 16L10.6665 15.1638L14.1566 12L10.6665 8.83615L11.5887 8L15.9998 12L11.5887 16Z"
-                      fill="#1D1F22"
-                    />
-                  </g>
-                </svg>
-              </div>
-            </div>
+              <template #badge>
+                <CompareButton :product-id="product.id" />
+              </template>
+            </SfProductCard>
           </transition-group>
           <transition-group
             v-else
@@ -218,7 +166,7 @@
 
                 <SfButton
                   class="sf-button--text desktop-only"
-                  @click="addToCompareProduct(product)"
+                  @click="addToCompare(product.id)"
                   style="margin: 0 0 0 auto; display: block"
                 >
                   Add to compare
@@ -406,9 +354,7 @@ export default defineComponent({
     });
 
     const { addToCompare } = useAddToCompare();
-    const addToCompareProduct = (product) => {
-      addToCompare([product.id]);
-    };
+
     onMounted(() => {
       root.$scrollTo(root.$el, 2000);
     });
@@ -433,7 +379,7 @@ export default defineComponent({
       showProducts,
       result,
       currentCategoryNameForAccordion,
-      addToCompareProduct,
+      addToCompare,
     };
   },
   components: {
