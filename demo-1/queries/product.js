@@ -1,9 +1,7 @@
-import gql from 'graphql-tag';
-
 module.exports = {
     getProductsByIds: ({ variables }) => ({
         variables,
-        query: gql`
+        query: `
             products(filter: {ids: $variables}) {
                 products {
                 id
