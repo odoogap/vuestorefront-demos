@@ -82,17 +82,17 @@ export default defineComponent({
     hideVisibility()
     watch(() => route.value.path, hideVisibility);
 
-    const { products, search } = useProduct('products');
+    const { products, search } = useProduct('id');
     const { removeFromCompare } = useAddToCompare();
 
-    // onSSR(async () => {
-    //   await search({
-    //     customQuery: {  }
-    //   });
-    // });
-    search({
-      customQuery: { getProductTemplate: 'getProductsByIds' }
+    onSSR(async () => {
+      await search({
+        customQuery: { getProductTemplate: 'getProductsByIds' }
+      });
     });
+    // search({
+    //   customQuery: { getProductTemplate: 'getProductsByIds' }
+    // });
 
     return {
       productCompareBar,
