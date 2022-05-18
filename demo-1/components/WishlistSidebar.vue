@@ -209,10 +209,12 @@ export default {
       )}/${productGetters.getSlug(wishlistItem.product)}`;
     };
 
-    const { addToCompare, getAddToCompareProductIds } = useAddToCompare();
+    const { addToCompare } = useAddToCompare();
     const compare = () => {
-      let ids = products.value.map((item) => item.id);
-      addToCompare(ids);
+      products.value.forEach(({product}) => {
+        addToCompare(product.id)
+      });
+
       router.push('/compare');
       toggleWishlistSidebar();
     };

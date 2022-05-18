@@ -1,5 +1,5 @@
 <template>
-  <div v-if="productCompareBar" class="fixed left-0 right-0 fixed-bar bottom-0 z-50">
+  <div v-if="productCompareBar && products.length" class="fixed left-0 right-0 fixed-bar bottom-0 z-50">
     <div id="layout" class="
         flex flex-col
         justify-between
@@ -8,20 +8,22 @@
         mx-auto
         bg-white
         md:flex-row md
-        card-container
+        card-container 
+        border border-sf-c-gray-darken
+        shadow-md
       ">
-      {{ products }}
-      <div class="flex flex-wrap flex-grow">
-        <div v-for="x in 4" :key="x" class="flex items-start mx-2 items">
-          <picture class="p-2 bg-gray-200">
-            <img class="w-14" src="/orange_bottle.png" />
+      <div class="grid grid-cols-4 gap-2">
+        <div v-for="product in products" :key="product.id" class="grid grid-cols-5 gap-x-2 relative">
+          <picture class="col-span-2 p-2 bg-gray-200">
+            <img class="w-32" :src="$image(product.smallImage)" />
           </picture>
-          <div class="p-2 ml-4 mr-3 text-sm">
-            <p class="font-medium">
-              Highlands Orange <br />
-              Juice Cordial 3L
+          <div class="col-span-3 mt-2 text-sm">
+            <p class="sf-product-card__title">
+              {{ product.name }}
             </p>
-            <p class="mt-2 text-xl font-bold">KES 510.00</p>
+            <p class="mt-2 text-lg font-bold">
+              {{ $n(product.price, 'currency') }}
+            </p>
           </div>
           <button class="
               px-2
@@ -31,7 +33,10 @@
               text-white
               bg-red-600
               rounded-full
-            " @click="removeFromCompare">
+              absolute
+              top-0
+              right-0
+            " @click="removeFromCompare(product.id)">
             &times;
           </button>
         </div>
@@ -48,7 +53,7 @@
             uppercase
             border-2
             rounded-md
-          ">
+          " @click.stop="clear">
           Done
         </button>
       </div>
@@ -57,17 +62,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, ref, watch } from '@nuxtjs/composition-api';
-// import { getProductsByIds } from '../queries/product';
+import { defineComponent, useRoute, ref, watch, computed, useStore } from '@nuxtjs/composition-api';
 
-import { useProduct } from '@vue-storefront/odoo';
-import { onSSR } from '@vue-storefront/core';
 import useAddToCompare from '~/composables/useAddToCompare';
+
+export interface State {
+  compare: {
+    products: []
+  }
+}
 
 export default defineComponent({
   name: 'TheCompareModal',
+
   setup() {
+    const { state } = useStore<State>();
     const route = useRoute();
+    const { removeFromCompare, clear, getProducts } = useAddToCompare();
+
     const productCompareBar = ref(true);
     const hideVisibility = () => {
       if (
@@ -82,22 +94,14 @@ export default defineComponent({
     hideVisibility()
     watch(() => route.value.path, hideVisibility);
 
-    const { products, search } = useProduct('id');
-    const { removeFromCompare } = useAddToCompare();
-
-    onSSR(async () => {
-      await search({
-        customQuery: { getProductTemplate: 'getProductsByIds' }
-      });
-    });
-    // search({
-    //   customQuery: { getProductTemplate: 'getProductsByIds' }
-    // });
+    getProducts()
+    const products = computed(() => state.compare.products)
 
     return {
       productCompareBar,
       products,
       removeFromCompare,
+      clear,
     };
   },
 });

@@ -18,7 +18,7 @@
       <WishlistSidebar />
       <LoginModal />
       <Notification />
-      <TheCompareModal />
+      <TheCompareModal class="desktop-only" />
     </div>
     <LazyHydrate when-visible>
       <AppFooter />

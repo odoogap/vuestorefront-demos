@@ -1,46 +1,49 @@
 <template>
-  <div id="category">
+  <div id="compare">
     <SfBreadcrumbs
       class="breadcrumbs desktop-only"
       :breadcrumbs="breadcrumbs"
     />
 
     <div class="main section">
-      <div class="sidebar desktop-only">
-        <SfLoader :class="{ loading }" :loading="loading"> </SfLoader>
-      </div>
       <SfLoader :class="{ loading }" :loading="loading">
-        <div class="products">
+        <div v-if="products.length" class="products">
           <transition-group
             appear
             name="products__slide"
             tag="div"
-            class="products__grid gap-7"
+            class="products__grid"
           >
             <SfProductCard
-              data-cy="category-product-card"
+              data-cy="compare-product-card"
               v-for="(product, i) in products"
-              :key="wishlistGetters.getItemSku(product)"
+              :key="i"
               :style="{ '--index': i }"
+              :title="productGetters.getName(product)"
               :imageWidth="216"
               :imageHeight="288"
-              :title="wishlistGetters.getItemName(product)"
-              :image="$image(wishlistGetters.getItemImage(product))"
+              :image="$image(productGetters.getCoverImage(product))"
               :nuxtImgConfig="{ fit: 'cover' }"
               image-tag="nuxt-img"
               :regular-price="
-                $n(wishlistGetters.getItemPrice(product).regular, 'currency')
+                $n(productGetters.getPrice(product).regular, 'currency')
               "
               :special-price="
-                wishlistGetters.getItemPrice(product).special &&
-                $n(wishlistGetters.getItemPrice(product).special, 'currency')
+                productGetters.getPrice(product).special &&
+                $n(productGetters.getPrice(product).special, 'currency')
               "
               :max-rating="5"
               :score-rating="productGetters.getAverageRating(product)"
               :show-add-to-cart-button="true"
               :isInWishlist="isInWishlist({ product })"
               :isAddedToCart="isInCart({ product })"
-              :link="localePath(getLocalPathFromWishListItem(product))"
+              :link="
+                localePath(
+                  `/p/${productGetters.getId(product)}/${productGetters.getSlug(
+                    product,
+                  )}`,
+                )
+              "
               @click:wishlist="
                 isInWishlist({ product })
                   ? removeItemFromWishList({ product: { product } })
@@ -49,6 +52,25 @@
               class="products__product-card"
             />
           </transition-group>
+        </div>
+        <div v-else key="no-results" class="before-results">
+          <SfImage
+            :width="256"
+            :height="176"
+            src="/error/error.svg"
+            class="before-results__picture"
+            alt="error"
+            loading="lazy"
+          />
+          <p class="before-results__paragraph">
+            {{ $t('Sorry, we didnt find what youre looking for') }}
+          </p>
+          <SfButton
+            class="before-results__button color-secondary smartphone-only"
+            @click="$emit('close')"
+          >
+            {{ $t('Go back') }}
+          </SfButton>
         </div>
       </SfLoader>
     </div>
@@ -110,28 +132,30 @@ import {
   SfHeading,
   SfTable,
   SfIcon,
+  SfImage,
+  SfButton
 } from '@storefront-ui/vue';
-import { computed, defineComponent } from '@nuxtjs/composition-api';
+import { computed, defineComponent, useStore } from '@nuxtjs/composition-api';
 import {
   useWishlist,
   useUser,
   wishlistGetters,
   productGetters,
-  useFacet,
   useCart,
 } from '@vue-storefront/odoo';
-import { onSSR } from '@vue-storefront/core';
 import { useUiState } from '~/composables';
+import useAddToCompare from '~/composables/useAddToCompare';
 
 export default defineComponent({
   name: 'Compare',
-  transition: 'fade',
-  setup() {
-    const {} = useWishlist();
 
+  transition: 'fade',
+
+  setup() {
+    const { state } = useStore();
+    const { loading } = useAddToCompare();
     const { isWishlistSidebarOpen, toggleWishlistSidebar } = useUiState();
     const {
-      wishlist,
       removeItem,
       isInWishlist,
       addItem: addItemToWishlist,
@@ -139,26 +163,8 @@ export default defineComponent({
     } = useWishlist();
     const { isInCart } = useCart();
     const { isAuthenticated } = useUser();
-    const products = computed(() => wishlistGetters.getItems(wishlist.value));
-    const totals = computed(() => wishlistGetters.getTotals(wishlist.value));
-    const totalItems = computed(() =>
-      wishlistGetters.getTotalItems(wishlist.value),
-    );
 
-    onSSR(async () => {
-      // await loadWishlist();
-    });
-
-    const getLocalPathFromWishListItem = (wishlistItem) => {
-      return `/p/${productGetters.getId(
-        wishlistItem.product,
-      )}/${productGetters.getSlug(wishlistItem.product)}`;
-    };
-    const { loading } = useFacet(); //
-    const showProducts = computed(
-      //
-      () => !loading.value && products.value?.length > 0,
-    );
+    const products = computed(() => state.compare.products);
 
     const breadcrumbs = computed(() => [
       //
@@ -173,18 +179,14 @@ export default defineComponent({
     ]);
 
     return {
-      showProducts,
       loading,
       isInWishlist,
       isInCart,
-      getLocalPathFromWishListItem,
       isAuthenticated,
       products,
       removeItem,
       isWishlistSidebarOpen,
       toggleWishlistSidebar,
-      totals,
-      totalItems,
       wishlistGetters,
       productGetters,
       breadcrumbs,
@@ -199,7 +201,12 @@ export default defineComponent({
     SfTable,
     SfHeading,
     SfIcon,
+    SfImage,
+    SfButton
   },
 });
 </script>
 
+<style lang="scss" scoped>
+@import '~/assets/css/compare.scss';
+</style>

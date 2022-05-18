@@ -116,11 +116,12 @@ export default {
     project-only-end */
     ['@vue-storefront/odoo/nuxt', {}]
   ],
+
   publicRuntimeConfig: {
     theme,
     baseURL: process.env.PUBLIC_PATH || process.env.BASE_URL || 'https://vsfdemo.labs.odoogap.com/'
-
   },
+  
   modules: [
     '@nuxtjs/pwa',
     'nuxt-precompress',
