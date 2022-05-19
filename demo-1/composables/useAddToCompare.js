@@ -22,9 +22,10 @@ const useAddToCompare = () => {
     }
 
     const getProduct = async (id) => {
-        await search({ id })
-
-        commit('compare/PUSH_PRODUCT', products.value)
+        if(!loading.value) {
+            await search({ id })
+            commit('compare/PUSH_PRODUCT', products.value)
+        }
     }
 
     const getProducts = () => {
