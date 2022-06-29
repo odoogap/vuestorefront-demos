@@ -97,3 +97,6 @@ sw.*
 /.vscode
 
 version
+
+# my files
+middleware.config.js 
