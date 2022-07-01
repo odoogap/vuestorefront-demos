@@ -147,7 +147,8 @@ export default {
               port: process.env.REDIS_PORT || 6379,
               password: process.env.REDIS_PASSWORD || '',
               defaultTimeout: 86400
-            }
+            },
+            enabled: process.env.REDIS_ENABLED || false
           }
         ]
       }

@@ -71,9 +71,11 @@ export default function cacheModule (options) {
     options
   });
 
-  if (!this.nuxt || !this.nuxt.renderer) {
+  if (!this.nuxt || !this.nuxt.renderer || !process.env.REDIS_ENABLED) {
     return;
   }
+
+  console.log('driver created')
 
   // Create cache driver
   const driver = requireDriver(options.driver);
