@@ -65,9 +65,10 @@ import {
   SfOrderHistory,
   SfContentPages
 } from '@storefront-ui/vue';
-import { ref, reactive, computed } from '@vue/composition-api';
+import { ref, reactive } from '@vue/composition-api';
 import { useUser } from '@vue-storefront/odoo';
 import { onSSR } from '@vue-storefront/core';
+import { useUiNotification } from '~/composables';
 
 export default {
   name: 'MyProfile',
@@ -82,6 +83,7 @@ export default {
     const activePage = ref('My profile');
     const account = reactive({});
     const { user, load: loadUser, logout } = useUser();
+    const { send } = useUiNotification();
 
     onSSR(async () => {
       await loadUser();
@@ -101,7 +103,10 @@ export default {
 
     const changeActivePage = async (title) => {
       if (title === 'Log out') {
-        alert('You are logged out!');
+        send({
+          message: 'You are logged out. We hope you come back soon mate!',
+          type: 'info',
+        });
 
         root.$router.push('/');
         await logout();
