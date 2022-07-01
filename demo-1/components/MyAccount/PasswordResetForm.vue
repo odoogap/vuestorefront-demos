@@ -1,9 +1,6 @@
 <template>
   <ValidationObserver v-slot="{ handleSubmit, reset }">
-    <form
-      class="form"
-      @submit.prevent="handleSubmit(submitForm(reset))"
-    >
+    <form class="form" @submit.prevent="handleSubmit(submitForm(reset))">
       <ValidationProvider
         v-slot="{ errors }"
         rules="required"
@@ -53,14 +50,14 @@
         </ValidationProvider>
       </div>
       <SfButton class="form__button">
-        {{ $t("Update password") }}
+        {{ $t('Update password') }}
       </SfButton>
     </form>
   </ValidationObserver>
 </template>
 
 <script>
-import { ref } from '@nuxtjs/composition-api';
+import { ref } from '@vue/composition-api';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { SfInput, SfButton } from '@storefront-ui/vue';
 export default {

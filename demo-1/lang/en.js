@@ -147,4 +147,10 @@ export default {
   'Billing': 'Billing',
   'Billing': 'Billing',
   'Shipping Details': 'Shipping Details',
+  'Enter the mobile number or email address associated with your account, and we will send you a link to reset your password.': 'Enter the mobile number or email address associated with your account, and we will send you a link to reset your password.',
+  'View orders and update your details. Make your checkout fast and easy!': 'View orders and update your details. Make your checkout fast and easy!',
+  'See all': 'See all',
+  'Subscribe': 'Subscribe',
+  'Subscribe to newsletter': 'Subscribe to newsletter',
+  'You can unsubscribe at any time': 'You can unsubscribe at any time'
 };
