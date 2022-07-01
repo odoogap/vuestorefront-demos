@@ -15,10 +15,15 @@
           title="My profile"
           data-testid="my-profile"
         >
-          <SfMyProfile
-            :account="account"
-            data-testid="my-profile-tabs"
-          />
+          <ProfileUpdateForm />
+        </SfContentPage>
+
+        <!-- Update password page -->
+        <SfContentPage
+          title="Update Password"
+          data-testid="update-password"
+        >
+          <PasswordResetForm />
         </SfContentPage>
 
         <!-- Shipping & Payment Details page -->
@@ -69,6 +74,8 @@ import { ref, reactive } from '@vue/composition-api';
 import { useUser } from '@vue-storefront/odoo';
 import { onSSR } from '@vue-storefront/core';
 import { useUiNotification } from '~/composables';
+import ProfileUpdateForm from '~/components/MyAccount/ProfileUpdateForm.vue';
+import PasswordResetForm from '~/components/MyAccount/PasswordResetForm.vue';
 
 export default {
   name: 'MyProfile',
@@ -77,8 +84,10 @@ export default {
     SfMyProfile,
     SfShippingDetails,
     SfMyNewsletter,
-    SfOrderHistory
-  },
+    SfOrderHistory,
+    ProfileUpdateForm,
+    PasswordResetForm
+},
   setup(props, { root }) {
     const activePage = ref('My profile');
     const account = reactive({});

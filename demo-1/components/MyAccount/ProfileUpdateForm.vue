@@ -1,9 +1,11 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit, reset }">
+  <ValidationObserver>
     <form
       class="form"
-      @submit.prevent="handleSubmit(submitForm(reset))"
+      @submit.prevent="submitForm()"
     >
+      <h1>My profile</h1>
+
       <div class="form__horizontal">
         <ValidationProvider
           v-slot="{ errors }"
@@ -53,7 +55,7 @@
           required
           class="form__element"
           style="margin-top: 10px"
-          @keypress.enter="handleSubmit(submitForm(reset))"
+          @keypress.enter="submitForm()"
         />
         <SfButton
           class="form__button"
@@ -94,7 +96,7 @@ export default {
   emits: ['submit'],
   setup(props, { emit }) {
     const { send } = useUiNotification();
-    const { user } = useUser();
+    const { user, updateUser } = useUser();
 
     const currentPassword = ref('');
     const requirePassword = ref(false);
@@ -105,23 +107,25 @@ export default {
     });
     const form = ref(resetForm());
 
-    const submitForm = (resetValidationFn) => () => {
-      const onComplete = () => {
-        form.value = resetForm();
-        requirePassword.value = false;
-        currentPassword.value = '';
-        resetValidationFn();
+    const submitForm = async () => () => {
+      try {
+        updateUser({
+          ...user,
+          name: form.value.name,
+          email: form.value.email
+        });
 
-        send({ message: 'Update Succefully.', type: 'success' });
-      };
-      const onError = (error) => {
         form.value = resetForm();
         requirePassword.value = false;
         currentPassword.value = '';
+      }
+      catch(e) {
+        form.value = resetForm();
+        requirePassword.value = false;
+        currentPassword.value = '';
+
         send({ message: error?.value, type: 'danger' });
-      };
-
-      emit('submit', { form, onComplete, onError });
+      }
     };
 
     return {
