@@ -3,10 +3,6 @@
     id="my-account"
     class="my-account"
   >
-    <SfBreadcrumbs
-      class="breadcrumbs desktop-only"
-      :breadcrumbs="breadcrumbs"
-    />
     <SfContentPages
       title="My Account"
       :active="activePage"
@@ -20,13 +16,14 @@
           data-testid="my-profile"
         >
           <SfMyProfile
-            :account="account"
+            :account="account.value"
             data-testid="my-profile-tabs"
             @update:personal="account = { ...account, ...$event }"
             @update:password="account = { ...account, ...$event }"
           />
         </SfContentPage>
 
+        <!-- Shipping & Payment Details page -->
         <SfContentPage
           title="Shipping & Payment Details"
           data-testid="shipping-details"
@@ -37,25 +34,26 @@
             @update:shipping="account = { ...account, ...$event }"
           />
         </SfContentPage>
-        <div class="test">
-          <SfContentPage title="Loyalty Card">
-          <!-- <SfMyNewsletter /> -->
-          </SfContentPage>
-        </div>
+
+        <!-- Newsletter page -->
         <SfContentPage title="Newsletter">
           <SfMyNewsletter />
         </SfContentPage>
       </SfContentCategory>
 
       <SfContentCategory title="Order details">
+        <!-- Order history page -->
         <SfContentPage title="Order history">
           <SfOrderHistory :orders="account.orders" />
         </SfContentPage>
 
+        <!-- My reviews page -->
         <SfContentPage title="My reviews">
-          <!-- <SfMyNewsletter /> -->
+          <!-- TODO: ADD MY REVIEWS PAGE -->
         </SfContentPage>
       </SfContentCategory>
+
+      <!-- Log out -->
       <SfContentPage title="Log out" />
     </SfContentPages>
   </div>
@@ -70,7 +68,9 @@ import {
   SfBreadcrumbs, 
   SfContentPages
 } from '@storefront-ui/vue';
-import { ref, reactive } from '@vue/composition-api';
+import { ref, reactive, computed } from '@vue/composition-api';
+import { useUser } from '@vue-storefront/odoo';
+import { onSSR } from '@vue-storefront/core';
 
 export default {
   name: 'MyProfile',
@@ -84,52 +84,26 @@ export default {
   },
   setup(context) {
     const activePage = ref('My profile');
-    const breadcrumbs = reactive([
-      {
-        text: 'Home',
-        link: '#'
-      },
-      {
-        text: 'My Account',
-        link: '#'
-      }
-    ]);
-    const account = reactive({
-      firstName: 'First Name',
-      lastName: 'Last Name',
-      email: 'Your email address',
-      password: 'a*23Et',
-      shipping: [
-        {
-          firstName: 'John',
-          lastName: 'Dog',
-          streetName: 'Sezame Street',
-          apartment: '24/193A',
-          city: 'Wroclaw',
-          state: 'Lower Silesia',
-          zipCode: '53-540',
-          country: 'Poland',
-          phoneNumber: '(00)560 123 456'
-        },
-        {
-          firstName: 'John',
-          lastName: 'Dog',
-          streetName: 'Sezame Street',
-          apartment: '20/193A',
-          city: 'Wroclaw',
-          state: 'Lower Silesia',
-          zipCode: '53-603',
-          country: 'Poland',
-          phoneNumber: '(00)560 123 456'
-        }
-      ],
-      orders: [
-        ['#45', '23th June, 2021', 'Visa card', '$412.00', 'Finalised'],
-        ['#46', '26th June, 2021', 'Paypal', '$132.00', 'Finalised'],
-        ['#47', '28th June, 2021', 'Mastercard', '$12.00', 'Finalised'],
-        ['#48', '28th June, 2021', 'Paypal', '$20.00', 'In process']
-      ]
+    const account = reactive({});
+    const { user, load: loadUser } = useUser();
+
+    onSSR(async () => {
+      await loadUser();
+      getAccountData();
     });
+
+    const getAccountData = () => {
+      account.value = {
+        firstName: user.value.name.split()[0],
+        lastName: user.value.name.split()[user.value.name.split().length - 1],
+        email: user.value.email,
+        password: '',
+        shipping: [],
+        orders: []
+      }
+
+      console.table(account.value)
+    }
 
     const changeActivePage = (title) => {
       if (title === 'Log out') {
@@ -145,7 +119,6 @@ export default {
 
     return {
       activePage,
-      breadcrumbs,
       account,
       changeActivePage
     }
