@@ -14,6 +14,7 @@
       @click:change="changeActivePage"
     >
       <SfContentCategory title="Personal Details">
+        <!-- My profile page -->
         <SfContentPage
           title="My profile"
           data-testid="my-profile"
@@ -25,6 +26,7 @@
             @update:password="account = { ...account, ...$event }"
           />
         </SfContentPage>
+
         <SfContentPage
           title="Shipping & Payment Details"
           data-testid="shipping-details"
@@ -59,7 +61,7 @@
   </div>
 </template>
 
-<script>
+<script type="module">
 import {
   SfMyProfile,
   SfShippingDetails,
@@ -68,12 +70,10 @@ import {
   SfBreadcrumbs, 
   SfContentPages
 } from '@storefront-ui/vue';
-import {
-  useUserOrder
-} from '@vue-storefront/odoo';
+import { ref, reactive } from '@vue/composition-api';
 
 export default {
-  name: 'MyAccount',
+  name: 'MyProfile',
   components: {
     SfBreadcrumbs,
     SfContentPages,
@@ -82,77 +82,74 @@ export default {
     SfMyNewsletter,
     SfOrderHistory
   },
-  data() {
-    return {
-      activePage: 'My profile',
-      breadcrumbs: [
+  setup(context) {
+    const activePage = ref('My profile');
+    const breadcrumbs = reactive([
+      {
+        text: 'Home',
+        link: '#'
+      },
+      {
+        text: 'My Account',
+        link: '#'
+      }
+    ]);
+    const account = reactive({
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      email: 'Your email address',
+      password: 'a*23Et',
+      shipping: [
         {
-          text: 'Home',
-          link: '#'
+          firstName: 'John',
+          lastName: 'Dog',
+          streetName: 'Sezame Street',
+          apartment: '24/193A',
+          city: 'Wroclaw',
+          state: 'Lower Silesia',
+          zipCode: '53-540',
+          country: 'Poland',
+          phoneNumber: '(00)560 123 456'
         },
         {
-          text: 'My Account',
-          link: '#'
+          firstName: 'John',
+          lastName: 'Dog',
+          streetName: 'Sezame Street',
+          apartment: '20/193A',
+          city: 'Wroclaw',
+          state: 'Lower Silesia',
+          zipCode: '53-603',
+          country: 'Poland',
+          phoneNumber: '(00)560 123 456'
         }
       ],
-      account: {
-        firstName: 'First Name',
-        lastName: 'Last Name',
-        email: 'Your email address',
-        password: 'a*23Et',
-        shipping: [
-          {
-            firstName: 'John',
-            lastName: 'Dog',
-            streetName: 'Sezame Street',
-            apartment: '24/193A',
-            city: 'Wroclaw',
-            state: 'Lower Silesia',
-            zipCode: '53-540',
-            country: 'Poland',
-            phoneNumber: '(00)560 123 456'
-          },
-          {
-            firstName: 'John',
-            lastName: 'Dog',
-            streetName: 'Sezame Street',
-            apartment: '20/193A',
-            city: 'Wroclaw',
-            state: 'Lower Silesia',
-            zipCode: '53-603',
-            country: 'Poland',
-            phoneNumber: '(00)560 123 456'
-          }
-        ],
-        orders: [
-          ['#45', '23th June, 2021', 'Visa card', '$412.00', 'Finalised'],
-          ['#46', '26th June, 2021', 'Paypal', '$132.00', 'Finalised'],
-          ['#47', '28th June, 2021', 'Mastercard', '$12.00', 'Finalised'],
-          ['#48', '28th June, 2021', 'Paypal', '$20.00', 'In process']
-        ]
-      }
-    };
-  },
-  methods: {
-    changeActivePage(title) {
+      orders: [
+        ['#45', '23th June, 2021', 'Visa card', '$412.00', 'Finalised'],
+        ['#46', '26th June, 2021', 'Paypal', '$132.00', 'Finalised'],
+        ['#47', '28th June, 2021', 'Mastercard', '$12.00', 'Finalised'],
+        ['#48', '28th June, 2021', 'Paypal', '$20.00', 'In process']
+      ]
+    });
+
+    const changeActivePage = (title) => {
       if (title === 'Log out') {
         alert('You are logged out!');
 
-        this.$router.push('/home');
+        context.root.$router.push('/home');
         
         return;
       }
 
-      this.activePage = title;
+      activePage.value = title;
+    }
+
+    return {
+      activePage,
+      breadcrumbs,
+      account,
+      changeActivePage
     }
   },
-  computed: {
-    orders() {
-      const { orders, search } = useUserOrder();
-
-      return orders;
-    }
-  }
 };
 </script>
 
