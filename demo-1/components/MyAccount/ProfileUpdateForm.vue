@@ -1,6 +1,9 @@
 <template>
   <ValidationObserver v-slot="{ handleSubmit, reset }">
-    <form class="form" @submit.prevent="handleSubmit(submitForm(reset))">
+    <form
+      class="form"
+      @submit.prevent="handleSubmit(submitForm(reset))"
+    >
       <div class="form__horizontal">
         <ValidationProvider
           v-slot="{ errors }"
@@ -40,7 +43,7 @@
         @close="requirePassword = false"
       >
         {{
-          $t('Please type your current password to change your email address.')
+          $t("Please type your current password to change your email address.")
         }}
         <SfInput
           v-model="currentPassword"
@@ -52,19 +55,22 @@
           style="margin-top: 10px"
           @keypress.enter="handleSubmit(submitForm(reset))"
         />
-        <SfButton class="form__button" type="submit">
-          {{ $t('Update personal data') }}
+        <SfButton
+          class="form__button"
+          type="submit"
+        >
+          {{ $t("Update personal data") }}
         </SfButton>
       </SfModal>
       <SfButton class="form__button">
-        {{ $t('Update personal data') }}
+        {{ $t("Update personal data") }}
       </SfButton>
     </form>
   </ValidationObserver>
 </template>
 
 <script>
-import { ref } from '@vue/composition-api';
+import { ref } from '@nuxtjs/composition-api';
 import { useUiNotification } from '~/composables';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { useUser, userGetters } from '@vue-storefront/odoo';
