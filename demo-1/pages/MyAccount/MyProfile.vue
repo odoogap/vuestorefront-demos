@@ -16,10 +16,8 @@
           data-testid="my-profile"
         >
           <SfMyProfile
-            :account="account.value"
+            :account="account"
             data-testid="my-profile-tabs"
-            @update:personal="account = { ...account, ...$event }"
-            @update:password="account = { ...account, ...$event }"
           />
         </SfContentPage>
 
@@ -65,7 +63,6 @@ import {
   SfShippingDetails,
   SfMyNewsletter,
   SfOrderHistory,
-  SfBreadcrumbs, 
   SfContentPages
 } from '@storefront-ui/vue';
 import { ref, reactive, computed } from '@vue/composition-api';
@@ -75,17 +72,16 @@ import { onSSR } from '@vue-storefront/core';
 export default {
   name: 'MyProfile',
   components: {
-    SfBreadcrumbs,
     SfContentPages,
     SfMyProfile,
     SfShippingDetails,
     SfMyNewsletter,
     SfOrderHistory
   },
-  setup(context) {
+  setup(props, { root }) {
     const activePage = ref('My profile');
     const account = reactive({});
-    const { user, load: loadUser } = useUser();
+    const { user, load: loadUser, logout } = useUser();
 
     onSSR(async () => {
       await loadUser();
@@ -101,15 +97,14 @@ export default {
         shipping: [],
         orders: []
       }
-
-      console.table(account.value)
     }
 
-    const changeActivePage = (title) => {
+    const changeActivePage = async (title) => {
       if (title === 'Log out') {
         alert('You are logged out!');
 
-        context.root.$router.push('/home');
+        root.$router.push('/');
+        await logout();
         
         return;
       }
