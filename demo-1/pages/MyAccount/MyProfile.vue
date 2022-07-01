@@ -54,25 +54,16 @@
           <!-- <SfMyNewsletter /> -->
         </SfContentPage>
       </SfContentCategory>
-<<<<<<< HEAD
-
-=======
->>>>>>> c16ca439491b7831a3b4d1e033eca8d5e2726024
       <SfContentPage title="Log out" />
     </SfContentPages>
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
-=======
-import { SfBreadcrumbs, SfContentPages } from '@storefront-ui/vue';
->>>>>>> c16ca439491b7831a3b4d1e033eca8d5e2726024
 import {
   SfMyProfile,
   SfShippingDetails,
   SfMyNewsletter,
-<<<<<<< HEAD
   SfOrderHistory,
   SfBreadcrumbs, 
   SfContentPages
@@ -80,11 +71,6 @@ import {
 import {
   useUserOrder
 } from '@vue-storefront/odoo';
-=======
-  SfOrderHistory
-} from '@storefront-ui/vue';
-import { useUserOrder, orderGetters } from '@vue-storefront/odoo';
->>>>>>> c16ca439491b7831a3b4d1e033eca8d5e2726024
 
 export default {
   name: 'MyAccount',
@@ -151,17 +137,12 @@ export default {
     changeActivePage(title) {
       if (title === 'Log out') {
         alert('You are logged out!');
-<<<<<<< HEAD
 
         this.$router.push('/home');
         
         return;
       }
 
-=======
-        return;
-      }
->>>>>>> c16ca439491b7831a3b4d1e033eca8d5e2726024
       this.activePage = title;
     }
   },
@@ -174,10 +155,7 @@ export default {
   }
 };
 </script>
-<<<<<<< HEAD
 
-=======
->>>>>>> c16ca439491b7831a3b4d1e033eca8d5e2726024
 <style lang="scss" scoped>
 @import "~@storefront-ui/vue/styles";
 #my-account {

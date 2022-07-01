@@ -116,14 +116,13 @@
               </SfColor>
             </template>
           </div>
+          
           <SfAddToCart
             data-cy="product-cart_add"
             :stock="stock"
-            v-model="qty"
             :disabled="loading || !allOptionsSelected"
-            :canAddToCart="stock > 0"
             class="product__add-to-cart"
-            @click="addItem({ product, quantity: parseInt(qty) })"
+            @click="handleAddToCart()"
           />
         </div>
 
@@ -235,6 +234,8 @@ import { onSSR } from '@vue-storefront/core';
 
 import MobileStoreBanner from '~/components/MobileStoreBanner.vue';
 import LazyHydrate from 'vue-lazy-hydration';
+import { useUiState } from '~/composables';
+
 export default {
   name: 'Product',
   transition: 'fade',
@@ -255,6 +256,8 @@ export default {
       useProduct('relatedProducts');
     const { addItem, loading } = useCart();
     const { addTags } = useCache();
+    const { toggleCartSidebar } =
+      useUiState();
 
     const { reviews: productReviews } = useReview('productReviews');
 
@@ -310,6 +313,18 @@ export default {
         query: { ...root.$route.query, ...filter }
       });
     };
+    
+    const handleAddToCart = async () => {
+      const params = {
+        product: product.value, 
+        quantity: 1
+      }
+      console.log(params)
+
+      await addItem(params);
+
+      toggleCartSidebar();
+    }
 
     const allOptionsSelected = computed(() => {
       let keys = [];
@@ -358,7 +373,9 @@ export default {
       loading,
       productGetters,
       productVariants,
-      productGallery
+      productGallery,
+      toggleCartSidebar,
+      handleAddToCart
     };
   },
   components: {
