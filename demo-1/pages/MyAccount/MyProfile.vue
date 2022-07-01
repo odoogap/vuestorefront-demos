@@ -54,20 +54,24 @@
           <!-- <SfMyNewsletter /> -->
         </SfContentPage>
       </SfContentCategory>
+
       <SfContentPage title="Log out" />
     </SfContentPages>
   </div>
 </template>
 
 <script>
-import { SfBreadcrumbs, SfContentPages } from '@storefront-ui/vue';
 import {
   SfMyProfile,
   SfShippingDetails,
   SfMyNewsletter,
-  SfOrderHistory
+  SfOrderHistory,
+  SfBreadcrumbs, 
+  SfContentPages
 } from '@storefront-ui/vue';
-import { useUserOrder, orderGetters } from '@vue-storefront/odoo';
+import {
+  useUserOrder
+} from '@vue-storefront/odoo';
 
 export default {
   name: 'MyAccount',
@@ -134,8 +138,12 @@ export default {
     changeActivePage(title) {
       if (title === 'Log out') {
         alert('You are logged out!');
+
+        this.$router.push('/home');
+        
         return;
       }
+
       this.activePage = title;
     }
   },
@@ -148,6 +156,7 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" scoped>
 @import "~@storefront-ui/vue/styles";
 #my-account {
