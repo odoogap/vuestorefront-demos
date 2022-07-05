@@ -2,8 +2,6 @@ import webpack from 'webpack';
 import theme from './themeConfig';
 import { getRoutes } from './routes';
 
-const isDev = process.env.NODE_ENV !== 'production';
-
 export default {
   server: {
     port: 3000,
@@ -130,29 +128,25 @@ export default {
     'nuxt-i18n',
     'cookie-universal-nuxt',
     'vue-scrollto/nuxt',
-    [
-      '~/helpers/cache/nuxt',
-      {
-        invalidation: {
-          endpoint: '/cache-invalidate',
-          key: '0ead60c3-d118-40be-9519-d531462ddc60',
-          handlers: ['./helpers/cache/defaultHandler']
-        },
-        driver: [
-          './helpers/cache.js',
-          {
-            isDev,
-            redis: {
-              host: process.env.REDIS_HOST || '127.0.0.1',
-              port: process.env.REDIS_PORT || 6379,
-              password: process.env.REDIS_PASSWORD || '',
-              defaultTimeout: 86400
-            },
-            enabled: process.env.REDIS_ENABLED || false
-          }
-        ]
-      }
-    ]
+    ['@vue-storefront/cache/nuxt', {
+      enabled: (process.env.REDIS_ENABLED === 'true') || false,
+      invalidation: {
+        endpoint: '/cache-invalidate',
+        key: '0ead60c3-d118-40be-9519-d531462ddc60',
+        handlers: ['./helpers/cache/defaultHandler']
+      },
+      driver: [
+        '@vue-storefront/redis-cache',
+        {
+          defaultTimeout: 86400,
+          redis: {
+            host: process.env.REDIS_HOST || '127.0.0.1',
+            port: process.env.REDIS_PORT || 6379,
+            password: process.env.REDIS_PASSWORD || ''
+          },
+        }
+      ]
+    }]
   ],
   nuxtPrecompress: {
     enabled: true,

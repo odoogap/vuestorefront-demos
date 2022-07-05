@@ -2443,14 +2443,14 @@
     regenerator-runtime "^0.13.9"
     systemjs "^6.12.1"
 
-"@vue-storefront/cache@^2.5.4":
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/@vue-storefront/cache/-/cache-2.5.4.tgz#cdb981b39125320daaafaad46aa5f7cb984dd7bb"
-  integrity sha512-t1oat7kXxCylEIbXAgxC4FV7ws++d4KIel9GAs1y6DAaUTL3bSZ9+rTV7xR4TjWFgKnHnZqifef+nl6TBrXppQ==
+"@vue-storefront/cache@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/cache/-/cache-2.6.0.tgz#f4f656bff8d32234c907df73ce93d32f5b635f2b"
+  integrity sha512-GTRRRBPYtv0ONcVjTjL5Fgcga39P+s/Myxq4fNR1F4Eu3in1o0lleg7ZOdoSVLu8nm+VAL4EiQI5JN+lTZe4aw==
   dependencies:
-    "@vue-storefront/core" "~2.5.4"
+    "@vue-storefront/core" "~2.6.0"
 
-"@vue-storefront/core@2.5.4", "@vue-storefront/core@~2.5.4":
+"@vue-storefront/core@2.5.4":
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/@vue-storefront/core/-/core-2.5.4.tgz#214ec0d2bdc3d2f18abdc45991ac7389aa9e1044"
   integrity sha512-J/zzReZ5D1pwKibFyLbcm1355L8+DKYgBms32QZ79AmscoFeRRRhnBFQHQ+DoygtxU2cKNzyMddTIocYdtEBeQ==
@@ -2458,6 +2458,16 @@
     axios "0.21.1"
     express "^4.17.1"
     is-https "^3.0.2"
+    lodash-es "^4.17.15"
+    vue "^2.6.11"
+
+"@vue-storefront/core@~2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/core/-/core-2.6.0.tgz#43a4baede17967429f820c69051ab640b13b9afc"
+  integrity sha512-grkiGaw8OiVmOBa+FkDVQ18K8fBGVoBItqEpoWgtBwzj+B+oNexI/QlvbtZpRrF9PHrdGsCiBlO0C2XwxecPEA==
+  dependencies:
+    axios "0.21.1"
+    express "^4.17.1"
     lodash-es "^4.17.15"
     vue "^2.6.11"
 
@@ -2518,6 +2528,13 @@
     "@nuxtjs/composition-api" "0.31.0"
     "@vue-storefront/core" "2.5.4"
     "@vue-storefront/odoo-api" "1.4.0-rc.4"
+
+"@vue-storefront/redis-cache@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@vue-storefront/redis-cache/-/redis-cache-1.0.1.tgz#3e044b03a813ac4270b1fa1b6a39b4d2bcda3db1"
+  integrity sha512-+p+n4f1/dhXagjmQ3ec47JsA79KJ1O8ZjIC1/iac1CdruZINzSzlBUdgDY79+Ri2wRr6GwSpnR9qjnLX+Eu5Hw==
+  dependencies:
+    redis-tag-cache "^1.2.1"
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.2.1":
   version "1.2.1"
