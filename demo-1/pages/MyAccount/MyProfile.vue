@@ -78,7 +78,7 @@ import ProfileUpdateForm from '~/components/MyAccount/ProfileUpdateForm.vue';
 import PasswordResetForm from '~/components/MyAccount/PasswordResetForm.vue';
 
 export default {
-  name: 'MyProfile',
+  name: 'my-profile',
   components: {
     SfContentPages,
     SfMyProfile,
