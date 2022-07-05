@@ -101,9 +101,9 @@ export default {
 
     const getAccountData = () => {
       account.value = {
-        firstName: user.value.name.split()[0],
-        lastName: user.value.name.split()[user.value.name.split().length - 1],
-        email: user.value.email,
+        firstName: user ? user?.value.name.split()[0] : '',
+        lastName: user ? user?.value.name.split()[user?.value.name.split().length - 1] : '',
+        email: user ? user?.value.email : '',
         password: '',
         shipping: [],
         orders: []
