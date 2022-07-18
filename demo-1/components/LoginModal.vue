@@ -507,4 +507,10 @@ export default {
     color: #43464e;
   }
 }
+::v-deep .sf-loader {
+  height: 19px;
+  .sf-loader__overlay {
+    background: #f1f2f3;
+  }
+}
 </style>

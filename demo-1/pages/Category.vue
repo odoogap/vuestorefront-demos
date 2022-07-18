@@ -379,7 +379,7 @@ export default defineComponent({
       showProducts,
       result,
       currentCategoryNameForAccordion,
-      addToCompare,
+      addToCompare
     };
   },
   components: {
