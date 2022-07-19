@@ -28,24 +28,6 @@ export default {
         type: 'image/x-icon',
         href: '/favicon.ico'
       },
-      {
-        rel: 'preconnect',
-        href: 'https://fonts.gstatic.com',
-        crossorigin: 'crossorigin'
-      },
-      {
-        rel: 'preload',
-        href:
-          'https://fonts.googleapis.com/css?family=Raleway:300,400,400i,500,600,700|Roboto:300,300i,400,400i,500,700&display=swap',
-        as: 'style'
-      },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://fonts.googleapis.com/css?family=Raleway:300,400,400i,500,600,700|Roboto:300,300i,400,400i,500,700&display=swap',
-        media: 'print',
-        onload: 'this.media=\'all\''
-      }
     ]
   },
   router: {
@@ -54,6 +36,21 @@ export default {
         .forEach((route) => routes.unshift(route));
     },
     middleware: ['checkout'],
+  },
+  googleFonts: {
+    families: {
+      Roboto: true,
+      Montserrat: {
+        wght: [100, 200, 300, 400, 500, 600, 700, 800, 900]
+      },
+      Lato: {
+        wght: [100, 300, 400, 700, 900]
+      },
+      Raleway: {
+        wght: [100, 200, 300, 400, 500, 600, 700, 800, 900]
+      }
+    },
+    download: false,
   },
   pwa: {
     meta: {
@@ -81,6 +78,7 @@ export default {
     '@nuxtjs/tailwindcss',
     '@nuxt/typescript-build',
     '@nuxtjs/style-resources',
+    '@nuxtjs/google-fonts',
     [
       '@vue-storefront/nuxt',
       {
@@ -118,11 +116,7 @@ export default {
     theme,
     baseURL: process.env.BASE_URL && process.env.BASE_URL.slice(-1) == '/' ?
               process.env.BASE_URL :
-              process.env.BASE_URL + '/' || 'https://vsfdemo.labs.odoogap.com/',
-    gtm: {
-      id: process.env.GOOGLE_TAG_MANAGER_ID,
-      enabled: process.env.GOOGLE_TAG_MANAGER_ENABLED || true,
-    },
+              process.env.BASE_URL + '/' || 'https://vsfdemo.labs.odoogap.com/'
   },
   modules: [
     '@nuxtjs/pwa',
