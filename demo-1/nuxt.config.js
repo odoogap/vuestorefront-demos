@@ -146,8 +146,20 @@ export default {
           },
         }
       ]
-    }]
+    }],
+    // google tag manager
+    '@nuxtjs/gtm',
   ],
+
+  // google tag manager
+  gtm: {
+    id: process.env.GOOGLE_TAG_MANAGER_ID,
+    enabled: process.env.GOOGLE_TAG_MANAGER_ENABLED || true,
+    pageTracking: true,
+    pageViewEventName: 'PageView',
+    debug: process.env.NODE_ENV !== 'production',
+  },
+
   nuxtPrecompress: {
     enabled: true,
     report: false,
