@@ -66,6 +66,9 @@ export default {
       short_name: 'VSFOdoo',
       lang: 'en',
     },
+    icon: {
+      purpose: 'maskable',
+    },
     workbox: {
       cleanupOutdatedCaches: true,
       preCaching:[
