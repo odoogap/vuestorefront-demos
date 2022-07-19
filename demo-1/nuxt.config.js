@@ -116,9 +116,13 @@ export default {
   ],
   publicRuntimeConfig: {
     theme,
-    baseURL: process.env.BASE_URL && process.env.BASE_URL.slice(-1) == '/' ? 
-              process.env.BASE_URL : 
-              process.env.BASE_URL + '/' || 'https://vsfdemo.labs.odoogap.com/'
+    baseURL: process.env.BASE_URL && process.env.BASE_URL.slice(-1) == '/' ?
+              process.env.BASE_URL :
+              process.env.BASE_URL + '/' || 'https://vsfdemo.labs.odoogap.com/',
+    gtm: {
+      id: process.env.GOOGLE_TAG_MANAGER_ID,
+      enabled: process.env.GOOGLE_TAG_MANAGER_ENABLED || true,
+    },
   },
   modules: [
     '@nuxtjs/pwa',
@@ -148,8 +152,20 @@ export default {
           },
         }
       ]
-    }]
+    }],
+    // google tag manager
+    '@nuxtjs/gtm',
   ],
+
+  // google tag manager
+  gtm: {
+    id: process.env.GOOGLE_TAG_MANAGER_ID,
+    enabled: process.env.GOOGLE_TAG_MANAGER_ENABLED || true,
+    pageTracking: true,
+    pageViewEventName: 'PageView',
+    debug: process.env.NODE_ENV !== 'production',
+  },
+
   nuxtPrecompress: {
     enabled: true,
     report: false,
