@@ -54,14 +54,26 @@ export default {
   },
   pwa: {
     meta: {
-      // eslint-disable-next-line camelcase
-      theme_color: '#fff'
+      name: 'VSF Odoo',
+      theme_color: '#fff',
+      lang: 'en',
+      description: 'VSF Odoo',
+      twitterCard: 'summary_large_image'
     },
     manifest: {
-      name: 'VSF Odoo ',
+      name: 'VSF Odoo',
+      description: 'VSF Odoo',
+      short_name: 'VSFOdoo',
       lang: 'en',
-      useWebmanifestExtension: false
-    }
+    },
+    workbox: {
+      cleanupOutdatedCaches: true,
+      preCaching:[
+        '/error/error.svg',
+        '/icons/*',
+        '/favicon.ico',
+      ],
+    },
   },
   device: {
     refreshOnResize: true
