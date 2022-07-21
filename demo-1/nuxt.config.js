@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import theme from './themeConfig';
 import { getRoutes } from './routes';
+import getAppRoutes from './sitemap';
 
 export default {
   server: {
@@ -131,7 +132,8 @@ export default {
     theme,
     baseURL: process.env.BASE_URL && process.env.BASE_URL.slice(-1) == '/' ?
               process.env.BASE_URL :
-              process.env.BASE_URL + '/' || 'https://vsfdemo.labs.odoogap.com/'
+              process.env.BASE_URL + '/' || 'https://vsfdemo.labs.odoogap.com/',
+    siteURL: process.env.SITE_URL || 'https://vsf.labs.odoogap.com/'
   },
   modules: [
     '@nuxtjs/pwa',
@@ -164,6 +166,8 @@ export default {
     }],
     // google tag manager
     '@nuxtjs/gtm',
+    // sitemap generator
+    '@nuxtjs/sitemap',
   ],
 
   // google tag manager
@@ -263,6 +267,27 @@ export default {
       cookieKey: 'vsf-locale'
     }
   },
+
+  // sitemap options
+  sitemap: {
+    hostname: process.env.SITE_URL || 'https://vsf.labs.odoogap.com/',
+    exclude: ['/checkout/**', '/checkout', '/cart', '/my-account', '/order-history'],
+    i18n: false,
+    cacheTime: 6000,
+    gzip: true,
+    defaults: {
+      changefreq: 'daily',
+      priority: 1,
+      lastmod: new Date()
+    },
+    routes: getAppRoutes,
+    filter: ({ routes }) => {
+      return routes.filter(route => {
+        return route.path?.toLowerCase() === route.path;
+      });
+    }
+  },
+
   styleResources: {
     scss: [
       require.resolve('@storefront-ui/shared/styles/_helpers.scss', {
