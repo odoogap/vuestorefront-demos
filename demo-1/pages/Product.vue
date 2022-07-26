@@ -116,7 +116,7 @@
               </SfColor>
             </template>
           </div>
-          
+
           <SfAddToCart
             data-cy="product-cart_add"
             :stock="stock"
@@ -289,9 +289,9 @@ export default {
 
     const productGallery = computed(() =>
       productGetters.getGallery(product.value).map((img) => ({
-        mobile: { url: root.$image(img.small) },
-        desktop: { url: root.$image(img.normal) },
-        big: { url: root.$image(img.big) },
+        mobile: { url: root.$image(img.small, 128, 128, product.value.imageFilename) },
+        desktop: { url: root.$image(img.normal, 422, 644, product.value.imageFilename) },
+        big: { url: root.$image(img.big, 422, 644, product.value.imageFilename) },
         alt: product.value.name || 'alt'
       }))
     );
@@ -313,10 +313,10 @@ export default {
         query: { ...root.$route.query, ...filter }
       });
     };
-    
+
     const handleAddToCart = async () => {
       const params = {
-        product: product.value, 
+        product: product.value,
         quantity: 1
       }
       console.log(params)
