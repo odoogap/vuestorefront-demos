@@ -102,7 +102,7 @@
               <SfCollectedProduct
                 v-for="product in products"
                 :key="cartGetters.getItemSku(product)"
-                :image="$image(cartGetters.getItemImage(product))"
+                :image="$image(cartGetters.getItemImage(product), 140, 236, cartGetters.getItemImageFilename(product))"
                 :title="cartGetters.getItemName(product)"
                 :regular-price="
                   $n(cartGetters.getItemPrice(product).regular, 'currency')

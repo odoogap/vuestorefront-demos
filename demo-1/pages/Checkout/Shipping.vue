@@ -187,6 +187,8 @@ import {
   useUser,
   userShippingGetters,
   useShipping,
+  useCart,
+  cartGetters,
 } from '@vue-storefront/odoo';
 import { required, min, digits } from 'vee-validate/dist/rules';
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
@@ -219,6 +221,9 @@ export default {
     const defaultShippingAddress = ref(false);
     const isShippingDetailsStepCompleted = ref(false);
     const canAddNewAddress = ref(true);
+    const { cart } = useCart();
+
+    const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
 
     const { load: loadShipping, shipping, save } = useShipping();
 
