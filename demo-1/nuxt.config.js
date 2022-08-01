@@ -2,8 +2,11 @@ import webpack from 'webpack';
 import theme from './themeConfig';
 import { getRoutes } from './routes';
 import getAppRoutes from './sitemap';
+import redirects from './customRoutes/redirects.json';
+import hooks from './hooks';
 
 export default {
+  hooks,
   server: {
     port: 3000,
     host: '0.0.0.0'
@@ -168,6 +171,8 @@ export default {
     '@nuxtjs/gtm',
     // sitemap generator
     '@nuxtjs/sitemap',
+    // redirect
+    '@nuxtjs/redirect-module',
   ],
 
   // google tag manager
@@ -177,6 +182,12 @@ export default {
     pageTracking: true,
     pageViewEventName: 'PageView',
     debug: process.env.NODE_ENV !== 'production',
+  },
+
+  // redirect
+  redirect: {
+    statusCode: 301,
+    rules: redirects,
   },
 
   nuxtPrecompress: {
