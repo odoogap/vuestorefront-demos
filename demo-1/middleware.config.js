@@ -6,6 +6,9 @@ const odooBaseUrl = formatedBaseUrl || 'https://vsfdemo.labs.odoogap.com/';
 const graphqlBaseUrl = `${odooBaseUrl}graphql/vsf`;
 const baseDomain = process.env.BASE_DOMAIN || 'vsfdemo.labs.odoogap.com'
 
+const extendApiMethods = require('./custom-api/api');
+const customQueries = require('./custom-api/customQueries');
+
 module.exports = {
   integrations: {
     odoo: {
@@ -14,8 +17,15 @@ module.exports = {
         odooBaseUrl,
         graphqlBaseUrl,
         baseDomain,
-      }
+      },
+      extensions: (extensions) => [
+        ...extensions,
+        {
+          name: 'odoo-extension',
+          extendApiMethods,
+        },
+      ],
+      customQueries,
     }
   }
 };
-
