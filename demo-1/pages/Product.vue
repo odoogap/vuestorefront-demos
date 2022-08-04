@@ -319,7 +319,6 @@ export default {
         product: product.value,
         quantity: 1
       }
-      console.log(params)
 
       await addItem(params);
 
