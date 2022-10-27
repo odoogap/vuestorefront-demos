@@ -1,6 +1,6 @@
 # Vuestorefront-demos
 Vuestorefront Demos
-Demo-1 submodule reflects https://vsf.labs.odoogap.com/
+Demo-1 submodule reflects https://vsf-dev.labs.odoogap.com/checkout/shipping
 
 
 
