@@ -1,8 +1,7 @@
 # Vuestorefront-demos
+
 Vuestorefront Demos
 Demo-1 submodule reflects https://vsf.labs.odoogap.com/
-
-
 
 ## Development
 
@@ -14,8 +13,7 @@ Demo-1 submodule reflects https://vsf.labs.odoogap.com/
 git push origin HEAD:dev -f to push to remote template-odoo
 ```
 
-
 ## Node Version
 
 Please use the following node version:
-v14.19.0
+v16.16.0
