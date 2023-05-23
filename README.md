@@ -13,6 +13,8 @@ Demo-1 submodule reflects https://vsf.labs.odoogap.com/
 git push origin HEAD:dev -f to push to remote template-odoo
 ```
 
+Build Trigger: 1000
+
 ## Node Version
 
 Please use the following node version:
