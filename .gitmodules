@@ -1,4 +1,4 @@
 [submodule "demo-1"]
 	path = demo-1
 	url = https://github.com/vuestorefront-community/template-odoo
-	branch = v1.4.0
+	branch = dev
