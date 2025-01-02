@@ -1,8 +1,13 @@
 # Vuestorefront-demos
-Vuestorefront Demos
+
+Vuestorefront Demos for vsf2 (nuxt2)
 Demo-1 submodule reflects https://vsf.labs.odoogap.com/
 
+## Warning
 
+This project is not supported anymore, please start with:
+
+https://github.com/erpgap/storefront-ui
 
 ## Development
 
